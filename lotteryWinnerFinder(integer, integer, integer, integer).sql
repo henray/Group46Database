@@ -3,7 +3,7 @@
 -- DROP FUNCTION public."lotteryWinnerFinder"(integer, integer, integer, integer);
 
 CREATE OR REPLACE FUNCTION public."lotteryWinnerFinder"(
-    mvp integer,
+    pId integer,
     "rngValue" integer,
     target integer,
     "gameId" integer)
@@ -11,7 +11,7 @@ CREATE OR REPLACE FUNCTION public."lotteryWinnerFinder"(
 $BODY$DECLARE
 	customerCount int;
 	customer int;
-	mvp ALIAS FOR $1;
+	pId ALIAS FOR $1;
 	rngValue ALIAS FOR $2;
 	target ALIAS FOR $3;
 	gameId ALIAS FOR $4;
@@ -20,34 +20,34 @@ BEGIN
 				FROM (
 					SELECT DISTINCT customerid
 					FROM CustomerOrder
-					JOIN (	SELECT orderId -- orders of mvp products within last two days
+					JOIN (	SELECT orderId -- orders of pId products within last two days
 						FROM Orders
-						JOIN ( 	SELECT DISTINCT orderId AS mvpOrderId -- orders with mvp products
+						JOIN ( 	SELECT DISTINCT orderId AS pIdOrderId -- orders with pId products
 							FROM ProductOrderWarehouse
-							JOIN ( 	SELECT productId AS mvpId -- product ids associated with mvp
+							JOIN ( 	SELECT productId AS pIdId -- product ids associated with pId
 								FROM PlayerMerchandisePlayer
-								WHERE playernumber = mvp) AS mvpProducts
-							ON ProductOrderWarehouse.productId = mvpProducts.mvpId) AS mvpOrdersA
-						ON Orders.orderId = mvpOrdersA.mvpOrderId
-						WHERE AGE(Orderdate) < '1000 days') AS mvpOrdersB
-					ON Customerorder.orderId = mvpOrdersB.orderId) AS a);
+								WHERE playernumber = pId) AS pIdProducts
+							ON ProductOrderWarehouse.productId = pIdProducts.pIdId) AS pIdOrdersA
+						ON Orders.orderId = pIdOrdersA.pIdOrderId
+						WHERE AGE(Orderdate) < '1000 days') AS pIdOrdersB
+					ON Customerorder.orderId = pIdOrdersB.orderId) AS a);
 
 	rngValue := rngValue % customerCount;
 
 	IF customerCount >= target THEN
 		FOR customer IN (SELECT DISTINCT customerid
 				FROM CustomerOrder
-				JOIN (	SELECT orderId -- orders of mvp products within last two days
+				JOIN (	SELECT orderId -- orders of pId products within last two days
 					FROM Orders
-					JOIN ( 	SELECT DISTINCT orderId AS mvpOrderId -- orders with mvp products
+					JOIN ( 	SELECT DISTINCT orderId AS pIdOrderId -- orders with pId products
 						FROM ProductOrderWarehouse
-						JOIN ( 	SELECT productId AS mvpId -- product ids associated with mvp
+						JOIN ( 	SELECT productId AS pIdId -- product ids associated with pId
 							FROM PlayerMerchandisePlayer
-							WHERE playernumber = mvp) AS mvpProducts
-						ON ProductOrderWarehouse.productId = mvpProducts.mvpId) AS mvpOrdersA
-					ON Orders.orderId = mvpOrdersA.mvpOrderId
-					WHERE AGE(Orderdate) < '1000 days') AS mvpOrdersB
-				ON Customerorder.orderId = mvpOrdersB.orderId) LOOP
+							WHERE playernumber = pId) AS pIdProducts
+						ON ProductOrderWarehouse.productId = pIdProducts.pIdId) AS pIdOrdersA
+					ON Orders.orderId = pIdOrdersA.pIdOrderId
+					WHERE AGE(Orderdate) < '1000 days') AS pIdOrdersB
+				ON Customerorder.orderId = pIdOrdersB.orderId) LOOP
 			IF rngValue = 0 THEN
 				CREATE TABLE IF NOT EXISTS lotteryWinners (
 					gameId		integer NOT NULL,
