@@ -47,7 +47,9 @@ BEGIN
 			IF rngValue = 0 THEN
 				CREATE TABLE IF NOT EXISTS lotteryWinners (
 					gameId		integer NOT NULL,
-					winnerId 	integer
+					winnerId 	integer,
+					PRIMARY KEY(gameId)
+					
 				);
 				INSERT INTO lotteryWinners
 					VALUES (gameId, customer);
@@ -59,7 +61,8 @@ BEGIN
 	ELSE
 		CREATE TABLE IF NOT EXISTS lotteryWinners (
 			gameId		integer NOT NULL,
-			winnerId 	integer
+			winnerId 	integer,
+			PRIMARY KEY(gameId)
 		);
 		
 		INSERT INTO lotteryWinners
