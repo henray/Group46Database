@@ -8,7 +8,13 @@
 -- randomly generated int, the target amount of product buyers,
 -- and the gamen number (for identification)find the winning 
 -- customer, and update a table with the winner, and the playoff 
--- game the draw was for. 
+-- game the draw was for.
+
+-- in our example db, we don't have enough purchases to only check
+-- purchases from a day or two ago AGE(Orderdate) < '2 days', so
+-- we had to use larger values (1000 days). however, if there were
+-- enough purchases, then we could expect to change it to the 
+-- smaller values
 
 -- Function: public.lotterywinnerfinderx(integer, character varying, integer, integer, integer)
 
