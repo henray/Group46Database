@@ -1,8 +1,8 @@
-﻿-- Function: public.playersalecount(integer, character varying)
+﻿-- Function: playersalecount(integer, character varying)
 
--- DROP FUNCTION public.playersalecount(integer, character varying);
+-- DROP FUNCTION playersalecount(integer, character varying);
 
-CREATE OR REPLACE FUNCTION public.playersalecount(
+CREATE OR REPLACE FUNCTION playersalecount(
     playernum integer,
     playerteam character varying)
   RETURNS integer AS
