@@ -1,0 +1,187 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Feb 2, 2016, 10:50:12 AM
+    Author     : henry_lin
+*/
+
+
+.button {
+    -fx-background-color: 
+        #c3c4c4,
+        linear-gradient(#d6d6d6 50%, white 100%),
+        radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,1;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+}
+
+.menu-button#about_button {
+    -fx-background-color: 
+        #c3c4c4,
+        linear-gradient(#d6d6d6 50%, white 100%),
+        radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,1;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+}
+
+.menu-button .label {
+    -fx-text-fill: black;
+    -fx-font-size: 12px;
+}
+.menu-button#about_button:hover{
+    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+}
+.menu-button .arrow {
+    -fx-background-color: transparent;
+}
+.menu-button > .arrow-button {
+    -fx-padding: 0;
+}
+
+.menu-button > .arrow-button > .arrow {
+    -fx-padding: 0;
+}
+
+.button:hover{
+    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+}
+
+.label#welcome_label,#new_project  {
+    -fx-font-size: 60px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Trebuchet MS";
+}
+
+
+#btnTarget {
+  -fx-fill: FIREBRICK;
+  -fx-font-weight: bold;
+  -fx-font-size:30;
+  -fx-font-family: "Segoe UI Light";
+  -fx-effect: dropshadow( gaussian , firebrick , 0,0,0,1 );  
+}
+
+#btnTarget2 {
+  -fx-fill: FIREBRICK;
+  -fx-font-weight: bold;
+  -fx-font-size:20;
+  -fx-font-family: "Segoe UI Light";
+  -fx-effect: dropshadow( gaussian , firebrick , 0,0,0,1 );  
+}
+
+#settings_label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+/*    -fx-font-family: "Verdana";*/
+}
+
+
+.root {
+    -fx-base: rgb(50, 50, 50);
+    -fx-background: rgb(50, 50, 50);
+    -fx-control-inner-background:  rgb(255, 255, 255);
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 0;
+}
+
+.tab{
+    -fx-background-insets: 0 1 0 1,0,0;
+}
+
+.tab-pane .tab
+{
+    -fx-background-color: #e6e6e6;
+
+}
+
+.tab-pane .tab:selected
+{
+    -fx-background-color: #3c3c3c;
+}
+
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #828282;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+} 
+
+.tab:selected .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #96b946;
+    -fx-focus-color: transparent;
+}
+
+.menu .label{     
+    -fx-text-fill: black;
+}
+
+.menu-bar {
+    -fx-background-color: linear-gradient(to bottom, -fx-base, derive(-fx-base,30%));
+}
+
+.menu-bar .label {
+    -fx-font-size: 12 pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: #dedede;
+
+}
+
+
+.menu:hover {
+    -fx-background-color: #bc784e;
+}
+
+.menu-item .label{
+    -fx-font-size: 12 pt;
+    -fx-label-line-length: 8;
+    /*-fx-background-color: #cc66ff;*/
+}
+
+#about_content{
+    -fx-font-size: 12 pt;
+    -fx-label-line-length: 8;
+    -fx-background-color: white;
+}
+#about_content:hover{
+    -fx-background-color: white;
+}
+
+.section_name {
+     -fx-font-size: 18 pt;
+     -fx-font-family: "Segoe UI Light";
+     -fx-fill: whitesmoke;
+     
+}
+.section_name2{
+    -fx-font-size: 25 pt;
+     -fx-font-family: "Segoe UI Light";
+     -fx-fill: whitesmoke;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
+    -fx-text-fill: white;
+}
+
+.list-cell:even { /* <=== changed to even */
+    -fx-background-color: lightgray;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #0093ff;
+    -fx-text-fill: white;
+}
+
+.image-label:hover {
+    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+}

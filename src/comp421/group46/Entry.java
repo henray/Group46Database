@@ -15,16 +15,17 @@ import javafx.stage.Stage;
  *
  * @author Katie Lin
  */
-public class Main extends Application {
+public class Entry extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("view/MainPage.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("view/Welcome.fxml"));
         
         Scene scene = new Scene(root);
-        stage.setTitle("NBA store - we like sports");
+        stage.setTitle("NBA Store - Welcome!");
         stage.setResizable(false);
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
     }
 

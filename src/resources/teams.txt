@@ -1,0 +1,31 @@
+NBA
+Boston Celtics
+Dallas Mavericks
+Brooklyn Nets
+Houston Rockets
+New York Knicks
+Memphis Grizzlies
+Philadelphia 76ers
+New Orleans Pelicans
+Toronto Raptors
+San Antonio Spurs
+Chicago Bulls
+Denver Nuggets
+Cleveland Cavaliers
+Minnesota Timberwolves
+Detroit Pistons
+Oklahoma City Thunder
+Indiana Pacers
+Portland Trail Blazers
+Milwaukee Bucks
+Utah Jazz
+Atlanta Hawks
+Golden State Warriors
+Charlotte Hornets
+Los Angeles Clippers
+Miami Heat
+Los Angeles Lakers
+Orlando Magic
+Phoenix Suns
+Washington Wizards
+Sacramento Kings
