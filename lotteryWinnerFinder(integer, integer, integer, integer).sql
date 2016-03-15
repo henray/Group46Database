@@ -1,3 +1,15 @@
+-- We have a playoff customer lottery.
+
+-- During playoffs, if more than target amount of people purchase 
+-- products related to the most valuable player of the game,
+-- then all those customers are entered into a draw to win a prize.  
+
+-- This will take the mvp's player team and jersey number, a
+-- randomly generated int, the target amount of product buyers,
+-- and the gamen number (for identification)find the winning 
+-- customer, and update a table with the winner, and the playoff 
+-- game the draw was for. 
+
 -- Function: public.lotterywinnerfinderx(integer, character varying, integer, integer, integer)
 
 -- DROP FUNCTION public.lotterywinnerfinderx(integer, character varying, integer, integer, integer);
