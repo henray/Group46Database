@@ -15,9 +15,9 @@ import java.util.List;
  *
  * @author Katie Lin
  */
-public class Teams {
+public class TeamsHandler {
     private List<String> teams;
-    public Teams(){
+    public TeamsHandler(){
         teams = new ArrayList<>();
         try{
             BufferedReader reader = new BufferedReader(new FileReader(Paths.TEAMS_TEXT));
@@ -31,5 +31,8 @@ public class Teams {
     }
     public List<String> getTeams(){
         return teams;
+    }
+    public void removeTeam(String team){
+        this.teams.remove(team);
     }
 }

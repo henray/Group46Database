@@ -5,7 +5,7 @@
  */
 package comp421.group46.controller;
 
-import comp421.group46.model.Teams;
+import comp421.group46.model.TeamsHandler;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
@@ -32,7 +32,7 @@ public class TeamQueryController implements Initializable, Controller {
     private ComboBox<String> teamOptionsBox;
     @FXML
     private TextArea teamQueryDescription;
-    Teams teams = new Teams();
+    TeamsHandler teams = new TeamsHandler();
     /**
      * Initializes the controller class.
      */
@@ -48,22 +48,19 @@ public class TeamQueryController implements Initializable, Controller {
 
     @FXML
     private void handleConfirm(ActionEvent event) {
-        PauseTransition pause = new PauseTransition(
-                Duration.seconds(2)
-        );
-        pause.play();
         ((Stage) ((Node)event.getSource()).getScene().getWindow()).hide();
     }
 
     @FXML
     private void handleCancel(ActionEvent event) {
         ((Stage) ((Node)event.getSource()).getScene().getWindow()).close();
+        teamOptionsBox.getSelectionModel().clearSelection();
     }
     
     public void setDescription(String description){
         this.teamQueryDescription.setText(description);
     }
     public String getTeamName(){
-        return teamOptionsBox.getSelectionModel().getSelectedItem().toString();
+        return teamOptionsBox.getSelectionModel().getSelectedItem();
     }
 }

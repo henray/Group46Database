@@ -5,12 +5,15 @@
  */
 package comp421.group46.controller;
 
-import comp421.group46.controller.TeamQueryController;
-import comp421.group46.model.TeamQueryResult;
-import comp421.group46.model.Teams;
+import comp421.group46.model.PlaceOrderResult;
+import comp421.group46.model.PlayerSaleResult;
+import comp421.group46.model.ProductsPurchasedResult;
+import comp421.group46.model.RevenueResult;
+import comp421.group46.model.QueryResult;
 import constants.Descriptions;
 import constants.Paths;
 import constants.PopupType;
+import constants.SpecificText;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,16 +22,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.sql.*;
-import java.util.Properties;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
@@ -48,47 +47,16 @@ public class MainPageController implements Initializable {
     @FXML
     private Text queryTitle;
     @FXML
-    private TableView<TeamQueryResult> table;
+    private TableView<QueryResult> table;
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        queryTitle.setText(SpecificText.DEFAULT_TITLE);
     }
-    
-    @FXML
-    private void handleTeamQuery(ActionEvent event) {
-        TeamQueryController x = (TeamQueryController)openPopupMenu(PopupType.TEAM_QUERY,"Team Query", Paths.TEAM_QUERY_FXML, Descriptions.TEAM_QUERY_DESCRIPTION);
-        String teamName = x.getTeamName();
-        String callableSQL = "{call retrieveRevenue(?)}";
-        Connection c = null;
-        CallableStatement stmt = null;
-        try{
-            c = getConnection();
-            stmt = c.prepareCall(callableSQL);
-            stmt.setString(1,teamName);
-            ResultSet rs = stmt.executeQuery();
-            ObservableList<TeamQueryResult> data = FXCollections.observableArrayList();
-            TableColumn names = new TableColumn("Team Name");
-            names.setCellValueFactory(new PropertyValueFactory<TeamQueryResult,String>("teamName"));
-            TableColumn revenues = new TableColumn("Revenue");
-            revenues.setCellValueFactory(new PropertyValueFactory<TeamQueryResult,Integer>("revenue"));
-            while(rs.next()){
-                data.add(new TeamQueryResult(rs.getString(1),rs.getInt(2)));
-            }
-            stmt.close();
-            c.close();
-            table.getColumns().clear();
-            table.setItems(data);
-            table.getColumns().addAll(names,revenues);
-            updateQueryTitle("Retrieved all revenues from: "+ teamName);
-        } catch (SQLException e){
-            System.out.println("problem finding driver");
-            e.printStackTrace();
-        }
-    }
-    
+ 
     private Controller openPopupMenu(PopupType type, String title, String fxmlPath, String description){
         final Stage testSuitePopup = new Stage();
         testSuitePopup.initModality(Modality.APPLICATION_MODAL);
@@ -105,9 +73,21 @@ public class MainPageController implements Initializable {
                 case TEAM_QUERY:
                     control = (TeamQueryController) control;
                     break;
-//                case PLAYER_QUERY:
-//                    control = (PlayerQueryController) control;
-//                    break;
+                case PLAYER_SALES:
+                    control = (PlayerSalesController) control;
+                    break;
+                case PRODUCTS_PURCHASED:
+                    control = (ProductsPurchasedController) control;
+                    break;
+                case PLACE_ORDER:
+                    control = (PlaceOrderController) control;
+                    break;
+                case TRANSFER_WAREHOUSE:
+                    control = (TransferWarehouseController) control;
+                    break;
+                case CHANGE_PRICE:
+                    control = (ChangePriceController) control;
+                    break;
                 default:
                     control = null;
                     break;
@@ -117,7 +97,6 @@ public class MainPageController implements Initializable {
             testSuitePopup.setScene(popUpScene);
             testSuitePopup.showAndWait();
         } catch(IOException e){
-            e.printStackTrace();
             System.exit(1);
         }
         return control;
@@ -131,5 +110,186 @@ public class MainPageController implements Initializable {
     
     private void updateQueryTitle(String title){
         queryTitle.setText(title);
+    }
+
+    @FXML
+    private void handleClearTable(ActionEvent event) {
+        table.getColumns().clear();
+        queryTitle.setText(SpecificText.DEFAULT_TITLE);
+    }
+
+    @FXML
+    private void handleExit(ActionEvent event) {
+        Platform.exit();
+    }
+    
+    @FXML
+    private void handleRevenue(ActionEvent event) {
+        TeamQueryController x = (TeamQueryController)openPopupMenu(PopupType.TEAM_QUERY,"Team Query", Paths.REVENUE_FXML, Descriptions.TEAM_QUERY);
+        try{
+            Connection c = getConnection();
+            String callableSQL = "{call retrieveRevenue(?)}";
+            CallableStatement cs = c.prepareCall(callableSQL);
+            
+            String teamName = x.getTeamName();
+            if (teamName == null) return;
+            cs.setString(1,teamName);
+            
+            ResultSet rs = cs.executeQuery();
+            
+            ObservableList<QueryResult> data = FXCollections.observableArrayList();
+            TableColumn names = new TableColumn("Team Name");
+            names.setCellValueFactory(new PropertyValueFactory<>("teamName"));
+            TableColumn revenues = new TableColumn("Revenue");
+            revenues.setCellValueFactory(new PropertyValueFactory<>("revenue"));
+            
+            while(rs.next()){
+                data.add(new RevenueResult(rs.getString(1),rs.getInt(2)));
+            }
+            
+            table.getColumns().clear();
+            table.setItems(data);
+            table.getColumns().addAll(names,revenues);
+            if(teamName.equals("NBA")) updateQueryTitle(SpecificText.TEAM_QUERY_ALL);
+            else updateQueryTitle(SpecificText.TEAM_QUERY_ONE+teamName);
+            
+            cs.close();
+            c.close();
+        } catch (SQLException e2) {
+            System.out.println("Error Code: "+e2.getErrorCode());
+            System.out.println("Error message: "+e2.getMessage());
+        }
+    }
+    
+    @FXML
+    private void handlePlayerSales(ActionEvent event) {
+        PlayerSalesController x = (PlayerSalesController)openPopupMenu(PopupType.PLAYER_SALES,"Player Sales", Paths.PLAYER_SALES_FXML, Descriptions.PLAYER_SALES);
+        String teamName = x.getTeamName();
+        try{
+            Connection c = getConnection();
+            String callableSQL = "{call playersalecount(?,?)}";
+            CallableStatement cs = c.prepareCall(callableSQL);
+            cs.setInt(1, x.getJerseyNumber());
+            cs.setString(2, teamName);
+            
+            ResultSet rs = cs.executeQuery();
+            
+            ObservableList<QueryResult> data = FXCollections.observableArrayList();
+            TableColumn numCustomers = new TableColumn("Number of Customers");
+            numCustomers.setCellValueFactory(new PropertyValueFactory<>("numCustomers"));
+            
+            while(rs.next()){
+                data.add(new PlayerSaleResult(rs.getInt(1)));
+            }
+            
+            table.getColumns().clear();
+            table.setItems(data);
+            table.getColumns().addAll(numCustomers);
+            updateQueryTitle(SpecificText.PLAYER_SALES_P1+x.getPlayerName()+" #"
+                    +x.getJerseyNumber()+SpecificText.PLAYER_SALES_P2+x.getTeamName());
+            
+            cs.close();
+            c.close();
+        } catch(NullPointerException e){
+            
+        } catch (SQLException e2) {
+            System.out.println("Error Code: "+e2.getErrorCode());
+            System.out.println("Error message: "+e2.getMessage());
+        }
+
+    }
+    
+    @FXML
+    private void handleProductsPurchased(ActionEvent event) {
+         ProductsPurchasedController x = (ProductsPurchasedController)openPopupMenu(PopupType.PRODUCTS_PURCHASED,"Products Purchased", Paths.PRODUCTS_PURCHASED_FXML, Descriptions.PRODUCTS_PURCHASED);
+        try{
+            Connection c = getConnection();
+            String callableSQL = "{call customersFromProduct(?)}";
+            CallableStatement cs = c.prepareCall(callableSQL);
+            int productID = x.getProductID();
+            cs.setInt(1,productID);
+            
+            ResultSet rs = cs.executeQuery();
+            
+            ObservableList<QueryResult> data = FXCollections.observableArrayList();
+            TableColumn customerID = new TableColumn("Customer ID");
+            customerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+            TableColumn firstName = new TableColumn("First Name");
+            firstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+            TableColumn lastName = new TableColumn("Last Name");
+            lastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+            TableColumn quantity = new TableColumn("Quantity Purchased");
+            quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+            
+            while(rs.next()){
+                data.add(new ProductsPurchasedResult(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getInt(4)));
+                System.out.println(rs.getInt(1));
+            }
+            
+            table.getColumns().clear();
+            table.setItems(data);
+            table.getColumns().addAll(customerID,firstName,lastName,quantity);
+            updateQueryTitle(SpecificText.PRODUCTS_PURCHASED+": "+x.getProductID());
+            
+            cs.close();
+            c.close();
+        } catch(NumberFormatException e){
+            
+        } catch (SQLException e2) {
+            System.out.println("Error Code: "+e2.getErrorCode());
+            System.out.println("Error message: "+e2.getMessage());
+        }
+    }
+    @FXML
+    private void handlePlaceOrder(ActionEvent event) {
+        PlaceOrderController x = (PlaceOrderController)openPopupMenu(PopupType.PLACE_ORDER,"Place Order", Paths.PLACE_ORDER_FXML, Descriptions.PLACE_ORDER);
+        try{
+            Connection c = getConnection();
+            String callableSQL = "{call placeAnOrder(?,?,?,?,?)}";
+            CallableStatement cs = c.prepareCall(callableSQL);
+            
+            cs.close();
+            c.close();
+        } catch(NumberFormatException e){
+            
+        } catch (SQLException e2) {
+            System.out.println("Error Code: "+e2.getErrorCode());
+            System.out.println("Error message: "+e2.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleTransferWarehouses(ActionEvent event) {
+        TransferWarehouseController x = (TransferWarehouseController)openPopupMenu(PopupType.TRANSFER_WAREHOUSE,"Transfer Warehouse", Paths.TRANSFER_WAREHOUSE_FXML, Descriptions.TRANSFER_WAREHOUSE);
+        try{
+            Connection c = getConnection();
+            String callableSQL = "{call moveWarehouses(?,?,?,?)}";
+            CallableStatement cs = c.prepareCall(callableSQL);
+            
+            cs.close();
+            c.close();
+        } catch(NumberFormatException e){
+            
+        } catch (SQLException e2) {
+            System.out.println("Error Code: "+e2.getErrorCode());
+            System.out.println("Error message: "+e2.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleChangePrices(ActionEvent event) {
+        ChangePriceController x = (ChangePriceController)openPopupMenu(PopupType.CHANGE_PRICE,"Change Pricing",Paths.CHANGE_PRICE_FXML,Descriptions.CHANGE_PRICE);
+        try{
+            Connection c = getConnection();
+            String callableSQL = "{call changePrices(?,?)}";
+            CallableStatement cs = c.prepareCall(callableSQL);
+            
+            
+            cs.close();
+            c.close();
+        } catch (SQLException e2) {
+            System.out.println("Error Code: "+e2.getErrorCode());
+            System.out.println("Error message: "+e2.getMessage());
+        }
     }
 }

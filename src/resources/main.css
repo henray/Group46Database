@@ -8,7 +8,9 @@ and open the template in the editor.
     Author     : henry_lin
 */
 
-
+.table-column {
+  -fx-alignment: CENTER;
+}
 .button {
     -fx-background-color: 
         #c3c4c4,
@@ -52,6 +54,24 @@ and open the template in the editor.
 .button:hover{
     -fx-background-color: linear-gradient(#2A5058, #61a2b1);
 }
+/*.button#first-button:hover{
+    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+}*/
+/*.button#second-button:hover{
+    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+}
+.button#third-button:hover{
+    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+}
+.button#fourth-button:hover{
+    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+}
+.button#fifth-button:hover{
+    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+}
+.button#sixth-button:hover{
+    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+}*/
 
 .label#welcome_label,#new_project  {
     -fx-font-size: 60px;
@@ -181,7 +201,48 @@ and open the template in the editor.
     -fx-background-color: #0093ff;
     -fx-text-fill: white;
 }
-
+.image-label {
+    -fx-text-fill: white;
+}
 .image-label:hover {
-    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+    -fx-text-fill: fuchsia;
+}
+
+#clear-button {
+    -fx-font-size:14;
+    -fx-font-family: Arial Black;
+    -fx-font-weight: 800;
+    -fx-background-color:linear-gradient(#ffff32 50%, black 100%);
+    -fx-text-fill: maroon;
+    -fx-background-radius: 0;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.1) , 1, 0.0 , 0 , 0 );
+}
+
+#clear-button:hover {
+    -fx-background-color: linear-gradient(maroon, white);
+    -fx-text-fill: yellow;
+}
+
+#exit-button {
+    -fx-font-size:14;
+    -fx-font-family: Arial Black;
+    -fx-font-weight: 800;
+    -fx-background-color:linear-gradient(maroon 50%, black 100%);
+    -fx-text-fill: yellow;
+    -fx-background-radius: 0;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.1) , 1, 0.0 , 0 , 0 );
+}
+
+#exit-button:hover {
+    -fx-background-color: linear-gradient(#ffff32, white);
+    -fx-text-fill: maroon;
+}
+
+#query-button {
+    -fx-font-size:14;
+    -fx-font-family:Arial Black;
+    -fx-font-weight: 800;
+}
+#query-button:hover {
+    -fx-text-fill:fuchsia;
 }

@@ -14,10 +14,10 @@ public class Paths {
     public static final String TEAMS_TEXT = "src/resources/teams.txt";
     
     public static final String MAIN_FXML = "/comp421/group46/view/MainPage.fxml";
-    public static final String TEAM_QUERY_FXML = "/comp421/group46/view/TeamQueryPopup.fxml";
-    public static String _FXML = "/comp421/group46/view/.fxml";
-//    public static String _FXML = "/comp421/group46/view/.fxml";
-//    public static String _FXML = "/comp421/group46/view/.fxml";
-//    public static String _FXML = "/comp421/group46/view/.fxml";
-//    public static String _FXML = "/comp421/group46/view/.fxml";
+    public static final String REVENUE_FXML = "/comp421/group46/view/TeamQueryPopup.fxml";
+    public static final String PLAYER_SALES_FXML = "/comp421/group46/view/PlayerSalesPopup.fxml";
+    public static final String PRODUCTS_PURCHASED_FXML = "/comp421/group46/view/ProductsPurchasedPopup.fxml";
+    public static String PLACE_ORDER_FXML = "/comp421/group46/view/PlaceOrderPopup.fxml";
+    public static String TRANSFER_WAREHOUSE_FXML = "/comp421/group46/view/TransferWarehousePopup.fxml";
+    public static String CHANGE_PRICE_FXML = "/comp421/group46/view/ChangePricePopup.fxml";
 }

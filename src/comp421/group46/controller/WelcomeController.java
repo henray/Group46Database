@@ -85,7 +85,7 @@ public class WelcomeController implements Initializable {
         updateStatus("Our GUI sucks so it takes forever to load!!");
          Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         PauseTransition pause = new PauseTransition(
-                Duration.seconds(3)
+                Duration.seconds(0)
         );
         pause.setOnFinished((ActionEvent event1) -> {
             Parent root = null;

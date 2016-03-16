@@ -12,10 +12,10 @@ import javafx.beans.property.SimpleStringProperty;
  *
  * @author Katie Lin
  */
-public class TeamQueryResult {
+public class RevenueResult implements QueryResult{
     private SimpleStringProperty teamName;
     private SimpleIntegerProperty revenue;
-    public TeamQueryResult(String teamName, int revenue){
+    public RevenueResult(String teamName, int revenue){
         this.teamName = new SimpleStringProperty(teamName);
         this.revenue = new SimpleIntegerProperty(revenue);
     }
