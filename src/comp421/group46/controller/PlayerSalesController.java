@@ -5,16 +5,17 @@
  */
 package comp421.group46.controller;
 
+import comp421.group46.model.ConnectionFactory;
 import comp421.group46.model.resulthelpers.PlayerQueryResult;
-import comp421.group46.model.TeamsHandler;
 import java.net.URL;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
-import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,13 +23,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -41,17 +40,31 @@ public class PlayerSalesController implements Controller, Initializable {
     private ComboBox<String> teamOptionsBox;
     @FXML
     private TextArea description;
-    TeamsHandler teams = new TeamsHandler();
     @FXML
     private TableView<PlayerQueryResult> tableView;
+    private ConnectionFactory cf = ConnectionFactory.getConnectionFactory();
+
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        teams.removeTeam("NBA");
-        ObservableList<String> options = FXCollections.observableArrayList(teams.getTeams());
+         List<String> teams = new ArrayList<>();
+        try{
+            String callableSQL = "{call queryTeamNames()}";
+            Connection c = cf.getConnection();
+            CallableStatement cs = c.prepareCall(callableSQL);
+            
+            ResultSet rs = cs.executeQuery();
+            
+            while(rs.next()){
+                teams.add(rs.getString(1));
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        ObservableList<String> options = FXCollections.observableArrayList(teams);
         teamOptionsBox.setItems(options);
     }
 
@@ -69,7 +82,7 @@ public class PlayerSalesController implements Controller, Initializable {
     @FXML
     private void handleTeamChoice(ActionEvent event) {
         try{
-            Connection c = getConnection();
+            Connection c = cf.getConnection();
             String callableSQL = "{call queryplayers(?)}";
             CallableStatement stmt = c.prepareCall(callableSQL);
             
@@ -107,10 +120,5 @@ public class PlayerSalesController implements Controller, Initializable {
     }
     public String getPlayerName(){
         return tableView.getSelectionModel().getSelectedItem().getPlayerName();
-    }
-    private Connection getConnection() throws SQLException {
-        DriverManager.registerDriver ( new org.postgresql.Driver() ) ;
-        String url = "jdbc:postgresql://comp421.cs.mcgill.ca:5432/cs421";
-        return DriverManager.getConnection (url,"cs421g46", "*Group_46*") ;
     }
 }

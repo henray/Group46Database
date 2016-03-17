@@ -15,9 +15,7 @@ import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.application.HostServices;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -83,7 +81,7 @@ public class WelcomeController implements Initializable {
     @FXML
     private void handleEnter(ActionEvent event) {
         updateStatus("Our GUI sucks so it takes forever to load!!");
-         Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         PauseTransition pause = new PauseTransition(
                 Duration.seconds(0)
         );
@@ -98,6 +96,7 @@ public class WelcomeController implements Initializable {
             stage.getIcons().add(new Image(Paths.FIGHTER_JET_LOGO));
             stage.setScene(scene);
             stage.sizeToScene();
+            stage.centerOnScreen();
         });
         pause.play();
     }

@@ -5,11 +5,11 @@
  */
 package comp421.group46.controller;
 
+import comp421.group46.model.DialogFactory;
 import constants.Paths;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -34,6 +34,7 @@ public class ProductsPurchasedController implements Initializable, Controller {
     private TextArea description;
     @FXML
     private TextField idInput;
+    private DialogFactory df = DialogFactory.getDialogFactory();
 
     /**
      * Initializes the controller class.
@@ -46,7 +47,7 @@ public class ProductsPurchasedController implements Initializable, Controller {
     @FXML
     private void handleConfirm(ActionEvent event) {
         if(!isInteger(idInput.getText())) {
-            popupInformation("Incorrect input", "That is not an integer", "Please input an integer");
+            df.popupInformation("Incorrect input", "That is not an integer", "Please input an integer");
             return;
         }
         ((Stage) ((Node)event.getSource()).getScene().getWindow()).hide();
@@ -61,21 +62,10 @@ public class ProductsPurchasedController implements Initializable, Controller {
     public void setDescription(String description) {
         this.description.setText(description);
     }
-    private Optional<ButtonType> popupInformation(String title,String header, String content){
-       Alert alert = new Alert(Alert.AlertType.INFORMATION);
-       alert.setTitle(title);
-       alert.setHeaderText(header);
-       alert.setContentText(content);
-       DialogPane dialogPane = alert.getDialogPane();
-       dialogPane.getStylesheets().add(getClass().getResource("/resources/main.css").toExternalForm());
-       dialogPane.getStyleClass().add("myDialog");
-       ((Stage)dialogPane.getScene().getWindow()).getIcons().add(new Image(Paths.FIGHTER_JET_LOGO));
-       return alert.showAndWait();
-   }
     public int getProductID() {
         return Integer.valueOf(idInput.getText());
     }
-    public static boolean isInteger(String str) {
+    private static boolean isInteger(String str) {
         if (str == null) {
             return false;
         }

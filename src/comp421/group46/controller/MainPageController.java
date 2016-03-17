@@ -5,11 +5,14 @@
  */
 package comp421.group46.controller;
 
+import comp421.group46.model.ConnectionFactory;
+import comp421.group46.model.DialogFactory;
 import comp421.group46.model.PlaceOrderResult;
 import comp421.group46.model.PlayerSaleResult;
 import comp421.group46.model.ProductsPurchasedResult;
 import comp421.group46.model.RevenueResult;
 import comp421.group46.model.QueryResult;
+import comp421.group46.model.TransferWarehouseResult;
 import constants.Descriptions;
 import constants.Paths;
 import constants.PopupType;
@@ -48,13 +51,15 @@ public class MainPageController implements Initializable {
     private Text queryTitle;
     @FXML
     private TableView<QueryResult> table;
+    private final DialogFactory df = DialogFactory.getDialogFactory();
+    private final ConnectionFactory cf = ConnectionFactory.getConnectionFactory();
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        queryTitle.setText(SpecificText.DEFAULT_TITLE);
+        updateQueryTitle(SpecificText.DEFAULT_TITLE);
     }
  
     private Controller openPopupMenu(PopupType type, String title, String fxmlPath, String description){
@@ -102,12 +107,6 @@ public class MainPageController implements Initializable {
         return control;
     }
     
-    private Connection getConnection() throws SQLException {
-        DriverManager.registerDriver ( new org.postgresql.Driver() ) ;
-        String url = "jdbc:postgresql://comp421.cs.mcgill.ca:5432/cs421";
-        return DriverManager.getConnection (url,"cs421g46", "*Group_46*") ;
-    }
-    
     private void updateQueryTitle(String title){
         queryTitle.setText(title);
     }
@@ -127,7 +126,7 @@ public class MainPageController implements Initializable {
     private void handleRevenue(ActionEvent event) {
         TeamQueryController x = (TeamQueryController)openPopupMenu(PopupType.TEAM_QUERY,"Team Query", Paths.REVENUE_FXML, Descriptions.TEAM_QUERY);
         try{
-            Connection c = getConnection();
+            Connection c = cf.getConnection();
             String callableSQL = "{call retrieveRevenue(?)}";
             CallableStatement cs = c.prepareCall(callableSQL);
             
@@ -150,7 +149,7 @@ public class MainPageController implements Initializable {
             table.getColumns().clear();
             table.setItems(data);
             table.getColumns().addAll(names,revenues);
-            if(teamName.equals("NBA")) updateQueryTitle(SpecificText.TEAM_QUERY_ALL);
+            if(teamName.equals("All Teams")) updateQueryTitle(SpecificText.TEAM_QUERY_ALL);
             else updateQueryTitle(SpecificText.TEAM_QUERY_ONE+teamName);
             
             cs.close();
@@ -166,7 +165,7 @@ public class MainPageController implements Initializable {
         PlayerSalesController x = (PlayerSalesController)openPopupMenu(PopupType.PLAYER_SALES,"Player Sales", Paths.PLAYER_SALES_FXML, Descriptions.PLAYER_SALES);
         String teamName = x.getTeamName();
         try{
-            Connection c = getConnection();
+            Connection c = cf.getConnection();
             String callableSQL = "{call playersalecount(?,?)}";
             CallableStatement cs = c.prepareCall(callableSQL);
             cs.setInt(1, x.getJerseyNumber());
@@ -203,7 +202,7 @@ public class MainPageController implements Initializable {
     private void handleProductsPurchased(ActionEvent event) {
          ProductsPurchasedController x = (ProductsPurchasedController)openPopupMenu(PopupType.PRODUCTS_PURCHASED,"Products Purchased", Paths.PRODUCTS_PURCHASED_FXML, Descriptions.PRODUCTS_PURCHASED);
         try{
-            Connection c = getConnection();
+            Connection c = cf.getConnection();
             String callableSQL = "{call customersFromProduct(?)}";
             CallableStatement cs = c.prepareCall(callableSQL);
             int productID = x.getProductID();
@@ -233,20 +232,21 @@ public class MainPageController implements Initializable {
             
             cs.close();
             c.close();
-        } catch(NumberFormatException e){
-            
+        } catch(NumberFormatException e1){
+            System.out.println(e1.getMessage());
         } catch (SQLException e2) {
-            System.out.println("Error Code: "+e2.getErrorCode());
-            System.out.println("Error message: "+e2.getMessage());
+            df.popupError("Product does not exist","SQLException caught.\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
         }
     }
     @FXML
     private void handlePlaceOrder(ActionEvent event) {
         PlaceOrderController x = (PlaceOrderController)openPopupMenu(PopupType.PLACE_ORDER,"Place Order", Paths.PLACE_ORDER_FXML, Descriptions.PLACE_ORDER);
         try{
-            Connection c = getConnection();
+            Connection c = cf.getConnection();
             String callableSQL = "{call placeAnOrder(?,?,?,?,?)}";
             CallableStatement cs = c.prepareCall(callableSQL);
+            
+            
             
             cs.close();
             c.close();
@@ -262,17 +262,35 @@ public class MainPageController implements Initializable {
     private void handleTransferWarehouses(ActionEvent event) {
         TransferWarehouseController x = (TransferWarehouseController)openPopupMenu(PopupType.TRANSFER_WAREHOUSE,"Transfer Warehouse", Paths.TRANSFER_WAREHOUSE_FXML, Descriptions.TRANSFER_WAREHOUSE);
         try{
-            Connection c = getConnection();
+            Connection c = cf.getConnection();
             String callableSQL = "{call moveWarehouses(?,?,?,?)}";
             CallableStatement cs = c.prepareCall(callableSQL);
+            cs.setInt(1, x.getSourceWarehouse());
+            cs.setInt(2, x.getDestinationWarehouse());
+            cs.setInt(3, x.getProductID());
+            cs.setInt(4, x.getQuantity());
             
+            ObservableList<QueryResult> data = FXCollections.observableArrayList();
+            TableColumn bool = new TableColumn("Move Status");
+            bool.setCellValueFactory(new PropertyValueFactory<>("isMoved"));
+            
+            ResultSet rs = cs.executeQuery();
+            rs.next();
+            data.add(new TransferWarehouseResult(rs.getBoolean(1)));
+            
+            table.getColumns().clear();
+            table.setItems(data);
+            table.getColumns().addAll(bool);
+            updateQueryTitle(SpecificText.TRANSFER_WAREHOUSE_P1+x.getQuantity()+
+                    SpecificText.TRANSFER_WAREHOUSE_P2+x.getProductID()+
+                    SpecificText.TRANSFER_WAREHOUSE_P3+x.getSourceWarehouse()+
+                    SpecificText.TRANSFER_WAREHOUSE_P4+x.getDestinationWarehouse());
             cs.close();
             c.close();
         } catch(NumberFormatException e){
             
         } catch (SQLException e2) {
-            System.out.println("Error Code: "+e2.getErrorCode());
-            System.out.println("Error message: "+e2.getMessage());
+            df.popupError("Not enough stock","SQLException caught.\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
         }
     }
 
@@ -280,7 +298,7 @@ public class MainPageController implements Initializable {
     private void handleChangePrices(ActionEvent event) {
         ChangePriceController x = (ChangePriceController)openPopupMenu(PopupType.CHANGE_PRICE,"Change Pricing",Paths.CHANGE_PRICE_FXML,Descriptions.CHANGE_PRICE);
         try{
-            Connection c = getConnection();
+            Connection c = cf.getConnection();
             String callableSQL = "{call changePrices(?,?)}";
             CallableStatement cs = c.prepareCall(callableSQL);
             

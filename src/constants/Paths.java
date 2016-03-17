@@ -11,7 +11,6 @@ package constants;
  */
 public class Paths {
     public static final String FIGHTER_JET_LOGO = "/resources/images/fighter_jet.png";
-    public static final String TEAMS_TEXT = "src/resources/teams.txt";
     
     public static final String MAIN_FXML = "/comp421/group46/view/MainPage.fxml";
     public static final String REVENUE_FXML = "/comp421/group46/view/TeamQueryPopup.fxml";

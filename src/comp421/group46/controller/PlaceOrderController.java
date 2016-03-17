@@ -5,6 +5,8 @@
  */
 package comp421.group46.controller;
 
+import comp421.group46.model.ConnectionFactory;
+import comp421.group46.model.DialogFactory;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -24,6 +26,8 @@ public class PlaceOrderController implements Initializable,Controller {
     private ComboBox<?> teamOptionsBox;
     @FXML
     private TextArea description;
+    private final DialogFactory df = DialogFactory.getDialogFactory();
+    private final ConnectionFactory cf = ConnectionFactory.getConnectionFactory();
 
     /**
      * Initializes the controller class.
