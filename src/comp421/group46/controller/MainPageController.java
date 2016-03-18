@@ -7,7 +7,6 @@ package comp421.group46.controller;
 
 import comp421.group46.model.ConnectionFactory;
 import comp421.group46.model.DialogFactory;
-import comp421.group46.model.PlaceOrderResult;
 import comp421.group46.model.PlayerSaleResult;
 import comp421.group46.model.ProductsPurchasedResult;
 import comp421.group46.model.RevenueResult;
@@ -156,8 +155,7 @@ public class MainPageController implements Initializable {
             cs.close();
             c.close();
         } catch (SQLException e2) {
-            System.out.println("Error Code: "+e2.getErrorCode());
-            System.out.println("Error message: "+e2.getMessage());
+            df.popupError("Something went wrong","SQLException caught.\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
         }
     }
     
@@ -193,8 +191,7 @@ public class MainPageController implements Initializable {
         } catch(NullPointerException e){
             
         } catch (SQLException e2) {
-            System.out.println("Error Code: "+e2.getErrorCode());
-            System.out.println("Error message: "+e2.getMessage());
+            df.popupError("Something went wrong","SQLException caught.\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
         }
 
     }
@@ -235,7 +232,7 @@ public class MainPageController implements Initializable {
         } catch(NumberFormatException e1){
             System.out.println(e1.getMessage());
         } catch (SQLException e2) {
-            df.popupError("Product does not exist","SQLException caught.\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
+            df.popupError("Something went wrong","SQLException caught.\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
         }
     }
     @FXML
@@ -245,7 +242,11 @@ public class MainPageController implements Initializable {
             Connection c = cf.getConnection();
             String callableSQL = "{call placeAnOrder(?,?,?,?,?)}";
             CallableStatement cs = c.prepareCall(callableSQL);
-            
+            cs.setInt(1, x.getCustomerID());
+            cs.setInt(2,x.getProductID());
+            cs.setInt(3,x.getQuantity());
+            cs.setString(4,x.getPaymentMethod());
+            cs.setInt(5,x.getWarehouseID());
             
             
             cs.close();
@@ -253,8 +254,7 @@ public class MainPageController implements Initializable {
         } catch(NumberFormatException e){
             
         } catch (SQLException e2) {
-            System.out.println("Error Code: "+e2.getErrorCode());
-            System.out.println("Error message: "+e2.getMessage());
+            df.popupError("Something went wrong","SQLException caught.\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
         }
     }
 
@@ -291,7 +291,7 @@ public class MainPageController implements Initializable {
         } catch(NumberFormatException e){
             
         } catch (SQLException e2) {
-            df.popupError("Not enough stock","SQLException caught.\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
+            df.popupError("Something went wrong","SQLException caught.\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
         }
     }
 
@@ -307,8 +307,7 @@ public class MainPageController implements Initializable {
             cs.close();
             c.close();
         } catch (SQLException e2) {
-            System.out.println("Error Code: "+e2.getErrorCode());
-            System.out.println("Error message: "+e2.getMessage());
+            df.popupError("Something went wrong","SQLException caught.\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
         }
     }
 }

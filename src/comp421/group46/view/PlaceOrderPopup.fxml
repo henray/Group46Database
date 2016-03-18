@@ -3,21 +3,68 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" cache="true" prefHeight="242.0" prefWidth="558.0" stylesheets="@../../../resources/main.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp421.group46.controller.PlaceOrderController">
+<AnchorPane id="AnchorPane" cache="true" prefHeight="270.0" prefWidth="524.0" stylesheets="@../../../resources/main.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp421.group46.controller.PlaceOrderController">
    <children>
-      <Text fill="WHITE" layoutX="14.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Query Description:">
-         <font>
-            <Font name="Segoe UI Light" size="18.0" />
-         </font>
-      </Text>
-      <ComboBox fx:id="teamOptionsBox" layoutX="184.0" layoutY="122.0" onAction="#handleSuiteBoxChoice" prefHeight="25.0" prefWidth="188.0" visibleRowCount="7" />
-      <HBox alignment="CENTER" layoutX="187.0" layoutY="167.0" prefHeight="53.0" prefWidth="181.0" spacing="30.0">
+      <VBox alignment="CENTER" layoutX="287.0" layoutY="30.0">
+         <children>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Query Description:">
+               <font>
+                  <Font name="Segoe UI Light" size="26.0" />
+               </font>
+            </Text>
+            <TextArea fx:id="description" editable="false" prefHeight="129.0" prefWidth="214.0" wrapText="true" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" layoutX="14.0" layoutY="30.0" spacing="5.0">
+         <children>
+            <HBox>
+               <children>
+                  <Label prefHeight="27.0" prefWidth="100.0" text="Customer ID : ">
+                     <font>
+                        <Font name="Segoe UI Light" size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="customerIDtextField" prefHeight="25.0" prefWidth="120.0" promptText="Enter a customer ID" />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label prefHeight="27.0" prefWidth="99.0" text="Product ID    : ">
+                     <font>
+                        <Font name="Segoe UI Light" size="16.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="productBox" onAction="#handleProduct" prefHeight="25.0" prefWidth="122.0" visibleRowCount="7" />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label prefHeight="27.0" prefWidth="100.0" text="Quantity       : ">
+                     <font>
+                        <Font name="Segoe UI Light" size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="quantityTextField" prefHeight="25.0" prefWidth="120.0" promptText="Enter a quantity" />
+               </children>
+            </HBox>
+            <Label prefHeight="27.0" prefWidth="99.0" text="Payment Type">
+               <font>
+                  <Font name="Segoe UI Light" size="16.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="paymentBox" onAction="#handlePayment" prefHeight="25.0" prefWidth="101.0" visibleRowCount="7" />
+         </children>
+      </VBox>
+      <HBox alignment="CENTER" layoutX="172.0" layoutY="203.0" prefHeight="53.0" prefWidth="181.0" spacing="30.0">
          <children>
             <Button alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleConfirm" prefWidth="75.0" text="Confirm" />
             <Button alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCancel" prefWidth="75.0" text="Cancel" />
@@ -26,6 +73,5 @@
             <Insets top="10.0" />
          </padding>
       </HBox>
-      <TextArea fx:id="description" editable="false" layoutX="163.0" layoutY="29.0" prefHeight="70.0" prefWidth="369.0" wrapText="true" />
    </children>
 </AnchorPane>

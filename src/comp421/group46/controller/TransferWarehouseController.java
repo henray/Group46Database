@@ -8,7 +8,6 @@ package comp421.group46.controller;
 import comp421.group46.model.ConnectionFactory;
 import comp421.group46.model.DialogFactory;
 import java.net.URL;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

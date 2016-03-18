@@ -19,4 +19,5 @@ public class Paths {
     public static String PLACE_ORDER_FXML = "/comp421/group46/view/PlaceOrderPopup.fxml";
     public static String TRANSFER_WAREHOUSE_FXML = "/comp421/group46/view/TransferWarehousePopup.fxml";
     public static String CHANGE_PRICE_FXML = "/comp421/group46/view/ChangePricePopup.fxml";
+    public static String REGISTRATION_FXML = "/comp421/group46/view/RegistrationPopup.fxml";
 }
