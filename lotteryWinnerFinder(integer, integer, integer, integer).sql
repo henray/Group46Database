@@ -21,11 +21,11 @@
 -- DROP FUNCTION public.lotterywinnerfinderx(integer, character varying, integer, integer, integer);
 
 CREATE OR REPLACE FUNCTION public.lotterywinnerfinderx(
-    playernum integer,
-    playerteam character varying,
-    rngvalue integer,
-    target integer,
-    gameid integer)
+    playernum integer, -- jersey number of player
+    playerteam character varying, -- team name of player
+    rngvalue integer, -- a random int. below query will generate a list. winner will be the rngvalue numbered person in the list
+    target integer, -- min amount of participating customers for the lottery to take place.
+    gameid integer) -- a unique id for each playoff game/draw. 
   RETURNS void AS
 $BODY$DECLARE
 	customerCount int;
