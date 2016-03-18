@@ -11,3 +11,13 @@ CREATE INDEX priceSorting ON product (retailprice);
 -- the rows in customerorder.
 
 CREATE INDEX indexCustomerOrder ON customerorder (customerid);
+
+-- i don't think clustering is necessary, as things are always
+-- changing. new orders are always being added, so clustering on
+-- order id will only be useful until the customer next purchases
+-- an item. It is neither useful for prices on items, as new
+-- players are always being added, and there aren't even enough
+-- products that the physical chunking of things by price for
+-- caching will speed things up.
+
+CLUSTER product USING retailprice;
