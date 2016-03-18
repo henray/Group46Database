@@ -11,8 +11,10 @@ import java.net.URL;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -52,15 +54,17 @@ public class PlayerSalesController implements Controller, Initializable {
     public void initialize(URL url, ResourceBundle rb) {
          List<String> teams = new ArrayList<>();
         try{
-            String callableSQL = "{call queryTeamNames()}";
+            String callableSQL = "SELECT teamName FROM Team ORDER BY teamName ASC";
             Connection c = cf.getConnection();
-            CallableStatement cs = c.prepareCall(callableSQL);
-            
-            ResultSet rs = cs.executeQuery();
-            
+
+            Statement s = c.createStatement();
+            ResultSet rs = s.executeQuery(callableSQL);
             while(rs.next()){
                 teams.add(rs.getString(1));
             }
+            c.close();
+            rs.close();
+            s.close();
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -83,11 +87,12 @@ public class PlayerSalesController implements Controller, Initializable {
     private void handleTeamChoice(ActionEvent event) {
         try{
             Connection c = cf.getConnection();
-            String callableSQL = "{call queryplayers(?)}";
-            CallableStatement stmt = c.prepareCall(callableSQL);
+            String callableSQL = "SELECT playernumber, firstname || ' ' || lastname FROM player WHERE teamname = ? ORDER BY playernumber";
             
-            stmt.setString(1, getTeamName());
-            ResultSet rs = stmt.executeQuery();
+            PreparedStatement ps = c.prepareStatement(callableSQL);
+            ps.setString(1, getTeamName());
+
+            ResultSet rs = ps.executeQuery();
             
             ObservableList<PlayerQueryResult> data = FXCollections.observableArrayList();
             TableColumn names = new TableColumn("Player Name");
@@ -104,7 +109,8 @@ public class PlayerSalesController implements Controller, Initializable {
             tableView.getColumns().addAll(names,jerseyNumbers);
             
             c.close();
-            stmt.close();
+            ps.close();
+            rs.close();
         } catch(SQLException e) {
             e.printStackTrace();
         }
