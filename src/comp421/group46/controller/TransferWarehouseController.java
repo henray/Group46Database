@@ -12,6 +12,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -193,11 +194,13 @@ public class TransferWarehouseController implements Initializable,Controller {
     private void handleSourceClicked(MouseEvent event) {
         try{
             List<Integer> warehouseIDList = new ArrayList<>();
-            String callableSQL = "{call queryWarehouses()}";
             Connection c = cf.getConnection();
-            CallableStatement cs = c.prepareCall(callableSQL);
+            
+            Statement stmt = c.createStatement();
+            String query = "SELECT Warehouse.warehouseid, Warehouse.address FROM Warehouse " +
+                "ORDER BY Warehouse.warehouseid ASC;";
 
-            ResultSet rs = cs.executeQuery();
+            ResultSet rs = stmt.executeQuery(query);
 
             while(rs.next()){
                 warehouseIDList.add(rs.getInt(1));
