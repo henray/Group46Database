@@ -6,7 +6,7 @@
 
 -- This will take the mvp's player team and jersey number, a
 -- randomly generated int, the target amount of product buyers,
--- and the gamen number (for identification)find the winning 
+-- and the game number (for identification)find the winning 
 -- customer, and update a table with the winner, and the playoff 
 -- game the draw was for.
 
