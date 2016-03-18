@@ -1,11 +1,8 @@
-﻿-- the below index will sort the prices of objects on our website,
--- which will be useful for queries where customers only want to
--- see prices in a certain range, e.g.
---      SELECT retailprice, productname
---      FROM product
---      WHERE retailprice < 20
+-- the below index will sort orders by date, which will allow for
+-- quick checks to see if product has been sold in a certain time
+-- frame.
 
-CREATE INDEX priceSorting ON product (retailprice);
+CREATE INDEX orderdateindex ON orders (orderdate);
 
 
 -- the below index will create an index for customerid, so that
