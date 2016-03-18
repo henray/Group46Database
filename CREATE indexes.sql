@@ -1,14 +1,18 @@
 ﻿-- the below index will sort the prices of objects on our website,
 -- which will be useful for queries where customers only want to
--- see prices in a certain range, or want to see products by price.
+-- see prices in a certain range, e.g.
+--      SELECT retailprice, productname
+--      FROM product
+--      WHERE retailprice < 20
 
 CREATE INDEX priceSorting ON product (retailprice);
 
+
 -- the below index will create an index for customerid, so that
 -- when customers want to see their own orders, the system will be
--- able to efficiently return them. Since customers often want to
--- review past orders, this should save time vs trawling through
--- the rows in customerorder.
+-- able to efficiently return them. It will also speed up our
+-- stored procedure customersFromProduct, as it has to compare
+-- customerID. This index will allow those lookups to be quick.
 
 CREATE INDEX indexCustomerOrder ON customerorder (customerid);
 
