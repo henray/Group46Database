@@ -6,7 +6,7 @@
 
 -- This will take the mvp's player team and jersey number, a
 -- randomly generated int, the target amount of product buyers,
--- and the gamen number (for identification)find the winning 
+-- and the game number (for identification)find the winning 
 -- customer, and update a table with the winner, and the playoff 
 -- game the draw was for.
 
@@ -21,11 +21,11 @@
 -- DROP FUNCTION public.lotterywinnerfinderx(integer, character varying, integer, integer, integer);
 
 CREATE OR REPLACE FUNCTION public.lotterywinnerfinderx(
-    playernum integer,
-    playerteam character varying,
-    rngvalue integer,
-    target integer,
-    gameid integer)
+    playernum integer, -- jersey number of player
+    playerteam character varying, -- team name of player
+    rngvalue integer, -- a random int. below query will generate a list. winner will be the rngvalue numbered person in the list
+    target integer, -- min amount of participating customers for the lottery to take place.
+    gameid integer) -- a unique id for each playoff game/draw. 
   RETURNS void AS
 $BODY$DECLARE
 	customerCount int;
@@ -62,7 +62,7 @@ BEGIN
 					ON Orders.orderId = playerOrdersA.playerOrderId
 					WHERE AGE(Orderdate) < '1000 days') AS playerOrdersB
 				ON Customerorder.orderId = playerOrdersB.orderId) LOOP
-			IF rngValue = 0 THEN
+			IF rngValue = 0 THEN --select the winner when rngValue reaches 0
 				CREATE TABLE IF NOT EXISTS lotteryWinners (
 					gameId		integer NOT NULL,
 					winnerId 	integer,
