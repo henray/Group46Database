@@ -10,6 +10,7 @@ import comp421.group46.model.DialogFactory;
 import java.net.URL;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -214,11 +215,11 @@ public class TransferWarehouseController implements Initializable,Controller {
     private void handleDestClicked(MouseEvent event) {
         try{
             List<Integer> warehouseIDList = new ArrayList<>();
-            String callableSQL = "{call queryWarehousesExcept(?)}";
+            String callableSQL = "SELECT w1.warehouseid, w1.address FROM Warehouse w1 EXCEPT SELECT w2.warehouseID,w2.address FROM Warehouse w2 WHERE w2.warehouseID = ? ORDER BY warehouseid ASC;";
             Connection c = cf.getConnection();
-            CallableStatement cs = c.prepareCall(callableSQL);
-            cs.setInt(1,sourceWarehouse);
-            ResultSet rs = cs.executeQuery();
+            PreparedStatement ps = c.prepareStatement(callableSQL);
+            ps.setInt(1,sourceWarehouse);
+            ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
                 warehouseIDList.add(rs.getInt(1));
