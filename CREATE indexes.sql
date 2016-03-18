@@ -18,6 +18,7 @@ CREATE INDEX indexCustomerOrder ON customerorder (customerid);
 -- an item. It is neither useful for prices on items, as new
 -- players are always being added, and there aren't even enough
 -- products that the physical chunking of things by price for
--- caching will speed things up.
+-- caching will speed things up. However, should you want to do
+-- that, the below could be run. 
 
 CLUSTER product USING retailprice;
