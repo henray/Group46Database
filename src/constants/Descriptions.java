@@ -10,8 +10,8 @@ package constants;
  * @author Katie Lin
  */
 public class Descriptions {
-    public static final String TEAM_QUERY = 
-            "This query will display the specified along with the total amount of revenue each respective team has generated for the store.";
+    public static final String TEAM_QUERY = "Placeholder"; //
+//            "This query will display the specified along with the total amount of revenue each respective team has generated for the store.";
     public static final String PLAYER_SALES = "Placeholder";
     public static final String PRODUCTS_PURCHASED = "Placeholder";
     public static final String PLACE_ORDER = "Placeholder";

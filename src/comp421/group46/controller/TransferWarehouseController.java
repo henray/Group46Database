@@ -175,7 +175,7 @@ public class TransferWarehouseController implements Initializable,Controller {
             Connection c = cf.getConnection();
             CallableStatement cs = c.prepareCall(callableSQL);
             cs.setInt(1,productID);
-            cs.setInt(2,destinationWarehouse);
+            cs.setInt(2,sourceWarehouse);
             ResultSet rs = cs.executeQuery();
             rs.next();
             
@@ -251,7 +251,7 @@ public class TransferWarehouseController implements Initializable,Controller {
         }
     }
 
-    private boolean someBoxesEmpty() {
+    public boolean someBoxesEmpty() {
         if(sourceWarehouseBox.getSelectionModel().isEmpty()
                 || destWarehouseBox.getSelectionModel().isEmpty()
                 || productsAtCurrentWarehouse.getSelectionModel().isEmpty()

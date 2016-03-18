@@ -22,11 +22,11 @@ public class SpecificText {
     //Button 3
     public static final String PRODUCTS_PURCHASED = "Retrieving all customers that have purchased product with ID ";
     //Button 4
+    
+    //Button 5
     public static final String TRANSFER_WAREHOUSE_P1 = "Successfully moved ";
     public static final String TRANSFER_WAREHOUSE_P2 = " products with id ";
     public static final String TRANSFER_WAREHOUSE_P3 = " from ";
     public static final String TRANSFER_WAREHOUSE_P4 = " to ";
-    //Button 5
-    
     //Button 6
 }

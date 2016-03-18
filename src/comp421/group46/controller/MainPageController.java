@@ -132,6 +132,7 @@ public class MainPageController implements Initializable {
             
             String teamName = x.getTeamName();
             if (teamName == null) return;
+            if (teamName.equals("All Teams")) teamName = "NBA";
             cs.setString(1,teamName);
             
             ResultSet rs = cs.executeQuery();
@@ -222,7 +223,6 @@ public class MainPageController implements Initializable {
             
             while(rs.next()){
                 data.add(new ProductsPurchasedResult(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getInt(4)));
-                System.out.println(rs.getInt(1));
             }
             
             table.getColumns().clear();
@@ -261,6 +261,7 @@ public class MainPageController implements Initializable {
     @FXML
     private void handleTransferWarehouses(ActionEvent event) {
         TransferWarehouseController x = (TransferWarehouseController)openPopupMenu(PopupType.TRANSFER_WAREHOUSE,"Transfer Warehouse", Paths.TRANSFER_WAREHOUSE_FXML, Descriptions.TRANSFER_WAREHOUSE);
+        if(x.someBoxesEmpty() || x.getQuantity() == 0) return;
         try{
             Connection c = cf.getConnection();
             String callableSQL = "{call moveWarehouses(?,?,?,?)}";
