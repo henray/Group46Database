@@ -108,12 +108,12 @@ public class TransferWarehouseController implements Initializable,Controller {
         sourceWarehouse = sourceWarehouseBox.getSelectionModel().getSelectedItem();
         try{
             List<Integer> warehouseIDList = new ArrayList<>();
-            String callableSQL = "{call queryWarehousesExcept(?)}";
+            String callableSQL = "SELECT w1.warehouseid, w1.address FROM Warehouse w1 EXCEPT SELECT w2.warehouseID,w2.address FROM Warehouse w2 WHERE w2.warehouseID = ? ORDER BY warehouseid ASC";
             Connection c = cf.getConnection();
-            CallableStatement cs = c.prepareCall(callableSQL);
-            cs.setInt(1, sourceWarehouse);
+            PreparedStatement ps = c.prepareStatement(callableSQL);
+            ps.setInt(1, sourceWarehouse);
 
-            ResultSet rs = cs.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
                 warehouseIDList.add(rs.getInt(1));
@@ -134,11 +134,11 @@ public class TransferWarehouseController implements Initializable,Controller {
         destinationWarehouse = destWarehouseBox.getSelectionModel().getSelectedItem();
         try{
             List<Integer> productIDList = new ArrayList<>();
-            String callableSQL = "{call queryProductsAtWarehouse(?)}";
+            String callableSQL = "SELECT productID FROM WarehouseProduct WHERE warehouseID = ? ORDER BY productID ASC";
             Connection c = cf.getConnection();
-            CallableStatement cs = c.prepareCall(callableSQL);
-            cs.setInt(1, destinationWarehouse);
-            ResultSet rs = cs.executeQuery();
+            PreparedStatement ps = c.prepareStatement(callableSQL);
+            ps.setInt(1, destinationWarehouse);
+            ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
                 productIDList.add(rs.getInt(1));
@@ -173,13 +173,14 @@ public class TransferWarehouseController implements Initializable,Controller {
         disableAndHide("product");
         productID = productsAtCurrentWarehouse.getSelectionModel().getSelectedItem();
         try{
-            String callableSQL = "{call queryProductQuantity(?,?)}";
+            String callableSQL = "SELECT quantity FROM WarehouseProduct WHERE productID = ? AND warehouseID = ?";
             Connection c = cf.getConnection();
-            CallableStatement cs = c.prepareCall(callableSQL);
-            cs.setInt(1,productID);
-            cs.setInt(2,sourceWarehouse);
-            ResultSet rs = cs.executeQuery();
+            PreparedStatement ps = c.prepareStatement(callableSQL);
+            ps.setInt(1,productID);
+            ps.setInt(2,sourceWarehouse);
+            ResultSet rs = ps.executeQuery();
             rs.next();
+            
             
             currentStockDisplay.setText(String.valueOf(rs.getInt(1)));
             stockDisplay.setVisible(true);
@@ -218,7 +219,7 @@ public class TransferWarehouseController implements Initializable,Controller {
     private void handleDestClicked(MouseEvent event) {
         try{
             List<Integer> warehouseIDList = new ArrayList<>();
-            String callableSQL = "SELECT w1.warehouseid, w1.address FROM Warehouse w1 EXCEPT SELECT w2.warehouseID,w2.address FROM Warehouse w2 WHERE w2.warehouseID = ? ORDER BY warehouseid ASC;";
+            String callableSQL = "SELECT w1.warehouseid, w1.address FROM Warehouse w1 EXCEPT SELECT w2.warehouseID,w2.address FROM Warehouse w2 WHERE w2.warehouseID = ? ORDER BY warehouseid ASC";
             Connection c = cf.getConnection();
             PreparedStatement ps = c.prepareStatement(callableSQL);
             ps.setInt(1,sourceWarehouse);
