@@ -18,8 +18,10 @@ CREATE INDEX orderdateindex ON orders (orderdate);
 -- the below index will create an index for customerid, so that
 -- when customers want to see their own orders, the system will be
 -- able to efficiently return them. It will also speed up our
--- stored procedure customersFromProduct, as it has to compare
+-- stored procedure "customersFromProduct", as it has to compare
 -- customerID. This index will allow those lookups to be quick.
+-- ALso, several queries from our 2nd deliverable will also be sped up
+-- since they require searches on customerId. 
 
 CREATE INDEX indexCustomerOrder ON customerorder (customerid);
 
