@@ -1,6 +1,16 @@
 -- the below index will sort orders by date, which will allow for
 -- quick checks to see if product has been sold in a certain time
--- frame. This will speed up our third query.
+-- frame. This will speed up our third query(modification) from the 2nd deliverable
+-- As shown below.
+
+/*SELECT DISTINCT productName 
+FROM Product 
+INNER JOIN ProductOrderWarehouse 
+ON Product.productID = ProductOrderWarehouse.productID 
+INNER JOIN Orders 
+ON ProductOrderWarehouse.orderID = Orders.orderID 
+WHERE orderDate > '2014-01-01'  AND orderDate < '2014-03-01' 
+ORDER BY productName DESC; */
 
 CREATE INDEX orderdateindex ON orders (orderdate);
 
