@@ -1,6 +1,6 @@
 -- the below index will sort orders by date, which will allow for
 -- quick checks to see if product has been sold in a certain time
--- frame.
+-- frame. This will speed up our third query.
 
 CREATE INDEX orderdateindex ON orders (orderdate);
 
