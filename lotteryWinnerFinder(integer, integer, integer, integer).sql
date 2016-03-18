@@ -62,7 +62,7 @@ BEGIN
 					ON Orders.orderId = playerOrdersA.playerOrderId
 					WHERE AGE(Orderdate) < '1000 days') AS playerOrdersB
 				ON Customerorder.orderId = playerOrdersB.orderId) LOOP
-			IF rngValue = 0 THEN
+			IF rngValue = 0 THEN --select the winner when rngValue reaches 0
 				CREATE TABLE IF NOT EXISTS lotteryWinners (
 					gameId		integer NOT NULL,
 					winnerId 	integer,
