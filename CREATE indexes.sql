@@ -24,22 +24,5 @@ CREATE INDEX indexCustomerOrder ON customerorder (customerid);
 -- products that the physical chunking of things by price for
 -- caching will speed things up. However, should you want to do
 -- that, the below could be run. 
--- This index will also help our 4th query from deliveralbe 2, as shown below:
-  /* Fourth query will grab the customers who have paid with VISA on products that have come from Adidas*/
-  /*SELECT Customer.firstName, Customer.lastName FROM Customer 
-  WHERE Customer.customerID IN 
-  (SELECT DISTINCT customerID FROM CustomerOrder, Orders, Productorderwarehouse
-  WHERE CustomerOrder.orderID = Orders.orderID 
-  AND Orders.orderID = Productorderwarehouse.orderID 
-  AND Orders.payment = 'visa'
-  AND Productorderwarehouse.productID 
-  IN 
-  (
-  	SELECT productID 
-  	FROM ShipmentProduct, ShipmentSupplier
-  	WHERE ShipmentProduct.shipmentID = ShipmentSupplier.shipmentID 
-  	AND ShipmentSupplier.supplierName = 'Adidas'
-  ) 
-  ORDER BY customerID);*/
 
 CLUSTER product USING retailprice;
