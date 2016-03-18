@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -46,11 +47,13 @@ public class TeamQueryController implements Initializable, Controller {
         List<String> teams = new ArrayList<>();
         teams.add("All Teams");
         try{
-            String callableSQL = "{call queryTeamNames()}";
             Connection c = cf.getConnection();
-            CallableStatement cs = c.prepareCall(callableSQL);
             
-            ResultSet rs = cs.executeQuery();
+            Statement stmt = c.createStatement();
+            String query = "SELECT Team.teamName FROM Team " +
+            "ORDER BY Team.teamName ASC";         
+            
+            ResultSet rs = stmt.executeQuery(query);
             
             while(rs.next()){
                 teams.add(rs.getString(1));
