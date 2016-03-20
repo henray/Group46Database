@@ -16,7 +16,8 @@ public class Descriptions {
     public static final String PRODUCTS_PURCHASED = "Displays information of every customer that has ever purchased a particular product.";
     public static final String PLACE_ORDER = "Creates a new order in our database using the inputted information specified below. "
             + "If the customer's ID does not exist in our system, the user is prompted by an additional, optional dialog to create this user.";
-    public static final String TRANSFER_WAREHOUSE = "Moves a number of products in our system from the source warehouse to the destination warehouse.";
+    public static final String TRANSFER_WAREHOUSE = "Moves a number of products in our system from the source warehouse to the destination warehouse. "
+            + "Please note that atleast 1 unit of the product must remain within the warehouse. Namely, you cannot move everything.";
     public static final String CHANGE_PRICE = "This is a multi-purpose procedure that given a threshold, we can increase or decrease the prices by an input modifier.\n" +
 "The decision to change the prices above or below the threshold is indicated by selecting Above or Below.\n" +
 "The modifier is a multiplier on the existing price.\n" +

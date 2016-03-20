@@ -87,7 +87,12 @@ public class TransferWarehouseController implements Initializable,Controller {
             df.popupInformation("Incorrect input", "That is not an integer", "Please input an integer");
             return;
         }
-        quantity = Integer.valueOf(transferQuantity.getText());
+        try{
+            quantity = Integer.valueOf(transferQuantity.getText());
+        } catch(NumberFormatException e){
+            df.popupError("Input too large","What are you doing?","Dont do that. Look at the total quantity.\nAct accordingly.");
+            return;
+        }
         ((Stage) ((Node)event.getSource()).getScene().getWindow()).hide();
     }
 
