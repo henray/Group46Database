@@ -65,6 +65,19 @@ public class RegistrationController implements Initializable, Controller {
             ps.setString(3, lastNameTextField.getText());
             ps.setString(4, emailTextField.getText());
             ps.setString(5, addressTextField.getText());
+            if(firstNameTextField.getText().length() > 50){
+                df.popupWarning("Name too long", "Yeah ok. Your name is not that long\n"+firstNameTextField.getText()+" is not a name we will accept.", "Time for you to get a new name.");
+                return;
+            } else if (lastNameTextField.getText().length() > 50) {
+                df.popupWarning("Name too long", "Yeah ok. You think you're funny or something?\n"+lastNameTextField.getText()+" is not a name we will accept.", "Enter a real family name or get out.");
+                return;
+            } else if (emailTextField.getText().length() > 50) {
+                df.popupWarning("Email too long", "Yeah ok. You think you're funny or something?\n"+emailTextField.getText()+" is not an email we will accept.", "Go make a new one.");
+                return;
+            } else if (addressTextField.getText().length() > 100) {
+                df.popupWarning("Address too long", "Yeah ok. That's not a real address.", "Enter your real address and stop wasting our time.");
+                return;
+            }
             ps.executeQuery();
         } catch(Exception e){
             e.printStackTrace();

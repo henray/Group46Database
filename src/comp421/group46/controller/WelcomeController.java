@@ -93,7 +93,6 @@ public class WelcomeController implements Initializable {
             }
             Scene scene = new Scene(root);
             stage.setTitle("NBA store - Main Page");
-            stage.getIcons().add(new Image(Paths.FIGHTER_JET_LOGO));
             stage.setScene(scene);
             stage.sizeToScene();
             stage.centerOnScreen();

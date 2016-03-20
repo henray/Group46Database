@@ -5,10 +5,12 @@
  */
 package comp421.group46;
 
+import constants.Paths;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -23,6 +25,7 @@ public class Entry extends Application {
         
         Scene scene = new Scene(root);
         stage.setTitle("NBA Store - Welcome!");
+        stage.getIcons().add(new Image(Paths.FIGHTER_JET_LOGO));
         stage.setResizable(false);
         stage.setScene(scene);
         stage.centerOnScreen();

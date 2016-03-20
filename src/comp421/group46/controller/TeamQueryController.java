@@ -7,11 +7,8 @@ package comp421.group46.controller;
 
 import comp421.group46.model.ConnectionFactory;
 import java.net.URL;
-import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,4 +83,5 @@ public class TeamQueryController implements Initializable, Controller {
     public String getTeamName(){
         return teamOptionsBox.getSelectionModel().getSelectedItem();
     }
+
 }

@@ -5,6 +5,8 @@
  */
 package comp421.group46.controller;
 
+import comp421.group46.model.ChangePriceResult;
+import comp421.group46.model.ProductOrderResult;
 import comp421.group46.model.ConnectionFactory;
 import comp421.group46.model.DialogFactory;
 import comp421.group46.model.PlayerSaleResult;
@@ -155,7 +157,8 @@ public class MainPageController implements Initializable {
             cs.close();
             c.close();
         } catch (SQLException e2) {
-            df.popupError("Something went wrong","SQLException caught.\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
+            df.popupError("Something went wrong","SQLException caught: "+e2.getSQLState()+".\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
+            updateQueryTitle(SpecificText.DEFAULT_TITLE);
         }
     }
     
@@ -191,7 +194,8 @@ public class MainPageController implements Initializable {
         } catch(NullPointerException e){
             
         } catch (SQLException e2) {
-            df.popupError("Something went wrong","SQLException caught.\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
+            df.popupError("Something went wrong","SQLException caught: "+e2.getSQLState()+".\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
+            updateQueryTitle(SpecificText.DEFAULT_TITLE);
         }
 
     }
@@ -203,9 +207,8 @@ public class MainPageController implements Initializable {
             Connection c = cf.getConnection();
             String callableSQL = "{call customersFromProduct(?)}";
             CallableStatement cs = c.prepareCall(callableSQL);
-            int productID = x.getProductID();
-            cs.setInt(1,productID);
-            
+            if (x.getProductID() == 0) return;
+            cs.setInt(1,x.getProductID());
             ResultSet rs = cs.executeQuery();
             
             ObservableList<QueryResult> data = FXCollections.observableArrayList();
@@ -232,15 +235,20 @@ public class MainPageController implements Initializable {
         } catch(NumberFormatException e1){
             System.out.println(e1.getMessage());
         } catch (SQLException e2) {
-            df.popupError("Something went wrong","SQLException caught.\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
+            df.popupError("Something went wrong","SQLException caught: "+e2.getSQLState()+".\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
+            updateQueryTitle(SpecificText.DEFAULT_TITLE);        
         }
     }
     @FXML
     private void handlePlaceOrder(ActionEvent event) {
         PlaceOrderController x = (PlaceOrderController)openPopupMenu(PopupType.PLACE_ORDER,"Place Order", Paths.PLACE_ORDER_FXML, Descriptions.PLACE_ORDER);
         try{
+            if(x.getPaymentMethod() == null || 
+                    x.getQuantity() <= 0){
+                return;
+            }
             Connection c = cf.getConnection();
-            String callableSQL = "{call placeAnOrder(?,?,?,?,?)}";
+            String callableSQL = "{call placeAnOrder(?,?,?,CAST(? AS payment_method),?)}";
             CallableStatement cs = c.prepareCall(callableSQL);
             cs.setInt(1, x.getCustomerID());
             cs.setInt(2,x.getProductID());
@@ -248,13 +256,34 @@ public class MainPageController implements Initializable {
             cs.setString(4,x.getPaymentMethod());
             cs.setInt(5,x.getWarehouseID());
             
+            System.out.println("cID: "+ x.getCustomerID());
+            System.out.println("pID: "+ x.getProductID());
+            System.out.println("Quantity: "+ x.getQuantity());
+            System.out.println("Payment-method: "+ x.getPaymentMethod());
+            System.out.println("wID: "+ x.getWarehouseID());
             
+            ObservableList<QueryResult> data = FXCollections.observableArrayList();
+            TableColumn orderID = new TableColumn("Order ID");
+            orderID.setCellValueFactory(new PropertyValueFactory<>("orderID"));
+            
+            ResultSet rs = cs.executeQuery();
+            
+            while(rs.next())
+                data.add(new ProductOrderResult(rs.getInt(1)));
+            
+            table.getColumns().clear();
+            table.setItems(data);
+            table.getColumns().addAll(orderID);
+            updateQueryTitle("Successfully placed an order for customer with ID"+x.getCustomerID()+". Order contains "+x.getQuantity()+" "+"products with ID "+x.getProductID()+" and was paid using "+ x.getPaymentMethod()); 
             cs.close();
             c.close();
         } catch(NumberFormatException e){
             
         } catch (SQLException e2) {
-            df.popupError("Something went wrong","SQLException caught.\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
+            df.popupError("Something went wrong","SQLException caught: "+e2.getSQLState()+".\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
+            updateQueryTitle(SpecificText.DEFAULT_TITLE);
+        } catch(Exception e2) {
+            System.out.println(e2.getMessage());
         }
     }
 
@@ -288,10 +317,9 @@ public class MainPageController implements Initializable {
                     SpecificText.TRANSFER_WAREHOUSE_P4+x.getDestinationWarehouse());
             cs.close();
             c.close();
-        } catch(NumberFormatException e){
-            
         } catch (SQLException e2) {
             df.popupError("Something went wrong","SQLException caught.\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
+            updateQueryTitle(SpecificText.DEFAULT_TITLE);
         }
     }
 
@@ -300,14 +328,37 @@ public class MainPageController implements Initializable {
         ChangePriceController x = (ChangePriceController)openPopupMenu(PopupType.CHANGE_PRICE,"Change Pricing",Paths.CHANGE_PRICE_FXML,Descriptions.CHANGE_PRICE);
         try{
             Connection c = cf.getConnection();
-            String callableSQL = "{call changePrices(?,?)}";
+            String callableSQL = "{call changePrices(?,?,?)}";
             CallableStatement cs = c.prepareCall(callableSQL);
+            cs.setInt(1, x.getThresholdAmount());
+            cs.setBoolean(2, x.getIncreaseOrDecrease());
+            cs.setDouble(3,x.getModifier());
             
+            if(x.getThresholdAmount() <= 0) return;
+            ResultSet rs = cs.executeQuery();
             
+            ObservableList<QueryResult> data = FXCollections.observableArrayList();
+            TableColumn productID = new TableColumn("Product ID");
+            productID.setCellValueFactory(new PropertyValueFactory<>("productID"));
+            TableColumn productName = new TableColumn("Name");
+            productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+            TableColumn productPrice = new TableColumn("New Price");
+            productPrice.setCellValueFactory(new PropertyValueFactory<>("productPrice"));
+            TableColumn sum = new TableColumn("Total Number of Sales");
+            sum.setCellValueFactory(new PropertyValueFactory<>("bigInt"));
+            
+            while(rs.next()){
+                data.add(new ChangePriceResult(rs.getInt(1),rs.getString(2),rs.getDouble(3),rs.getInt(4)));
+            }
+            table.getColumns().clear();
+            table.setItems(data);
+            table.getColumns().setAll(productName,productID,productPrice,sum);
+            updateQueryTitle("Price of all products which have sold a greater amount than "+x.getThresholdAmount()+" have been modified by a multiplier of "+x.getModifier());
             cs.close();
             c.close();
         } catch (SQLException e2) {
-            df.popupError("Something went wrong","SQLException caught.\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
+            updateQueryTitle(SpecificText.DEFAULT_TITLE);
+            df.popupError("Something went wrong","SQLException caught: "+e2.getSQLState()+".\nThe action could not be completed.","Code: "+e2.getErrorCode()+"\n"+e2.getMessage());
         }
     }
 }

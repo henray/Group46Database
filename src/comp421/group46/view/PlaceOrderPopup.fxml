@@ -33,7 +33,7 @@
                         <Font name="Segoe UI Light" size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="customerIDtextField" prefHeight="25.0" prefWidth="120.0" promptText="Enter a customer ID" />
+                  <TextField fx:id="customerIDTextField" prefHeight="25.0" prefWidth="120.0" promptText="Enter a customer ID" />
                </children>
             </HBox>
             <HBox>
