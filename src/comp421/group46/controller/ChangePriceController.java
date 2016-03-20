@@ -78,8 +78,8 @@ public class ChangePriceController implements Initializable, Controller {
 
     @FXML
     private void handleCancel(ActionEvent event) {
-        clearInputs();
         ((Stage) ((Node)event.getSource()).getScene().getWindow()).close();
+        clearInputs();
     }
     
     public void setDescription(String description){
