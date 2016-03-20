@@ -26,8 +26,9 @@ CREATE OR REPLACE FUNCTION public.lotterywinnerfinderx(
     rngvalue integer, -- a random int. below query will generate a list. winner will be the rngvalue numbered person in the list
     target integer, -- min amount of participating customers for the lottery to take place.
     gameid integer) -- a unique id for each playoff game/draw. 
-  RETURNS void AS
-$BODY$DECLARE
+RETURNS void AS
+$BODY$
+DECLARE
 	customerCount int;
 	customer int;
 BEGIN	
@@ -87,8 +88,6 @@ BEGIN
 			VALUES (gameId, NULL);
 	END IF;
 
-END$BODY$
-  LANGUAGE plpgsql VOLATILE
-  COST 100;
-ALTER FUNCTION public.lotterywinnerfinderx(integer, character varying, integer, integer, integer)
-  OWNER TO postgres;
+END
+$BODY$
+LANGUAGE plpgsql
