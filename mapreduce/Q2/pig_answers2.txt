@@ -1,0 +1,31 @@
+(i)
+(a) How many Maps and Reduces are generated in each job?
+
+	raw -> fltrd 				1 map 0 reduce
+
+	fltrd ->...-> final			2 map 1 reduce
+	
+(b) What does the schema look like just after the join?
+
+	| results     | winner::date:bytearray     | winner::type:chararray     | winner::parl:int     | winner::prov:chararray     | winner::riding:chararray     | winner::lastname:chararray     | winner::firstname:chararray     | winner::gender:chararray     | winner::occupation:chararray     | winner::party:chararray     | winner::votes:int     | winner::percent:double     | winner::elected:int     | loser::date:bytearray     | loser::type:chararray     | loser::parl:int     | loser::prov:chararray     | loser::riding:chararray     | loser::lastname:chararray     | loser::firstname:chararray     | loser::gender:chararray     | loser::occupation:chararray     | loser::party:chararray      | loser::votes:int     | loser::percent:double     | loser::elected:int     |
+
+
+(c) How long did the query run?
+
+	Pig script completed in 46 seconds and 354 milliseconds
+
+
+(ii) Now modify this script to have your join step run with 4 reduce tasks.
+(a) How many Maps and Reduces are generated in each job?
+
+	raw -> fltrd 				1 map 0 reduce
+
+	fltrd ->...-> final			2 map 4 reduce
+
+(b) How long did the query run?
+
+	Pig script completed in 46 seconds and 346 milliseconds (46346 ms)
+
+(c) Is the difference in query execution time what you were expecting ? Describe what you were expecting to see and (if that is not what happened in the end) why you think it did not happen ?
+
+	Since the file is only 4mb in size, we weren't sure if the reduction in query time due to parallelism would be greater than the increase in communication time between compute nodes. It seems that the difference is neglible.
