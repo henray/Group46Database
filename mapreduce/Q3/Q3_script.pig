@@ -1,28 +1,28 @@
 --load the data from HDFS and define the schema
-raw = LOAD '/data2/cl03.csv' USING PigStorage(',') AS (date, type:chararray, parl:int, prov:chararray, riding:chararray, lastname:chararray, firstname:chararray, gender:chararray, occupation:chararray, party:chararray, votes:int, percent:double, elected:int);
+raw = LOAD '/data2/cl03.csv' USING PigStorage(',') AS (date, type:chararray, parl:int, prov:chararray, riding:chararray, lAStname:chararray, firstname:chararray, gender:chararray, occupation:chararray, party:chararray, votes:int, percent:double, elected:int);
 
 fltrd = FILTER raw BY (type == 'Gen') AND (elected == 1);
 
 --need to group before sum
 parlgroup = GROUP fltrd BY parl;
 
---gets count of elected people i.e. number of members in parliament
+--gets count of elected people i.e. number of members in parlgroup
 
-parlcount = FOREACH parliament GENERATE group as num, COUNT (fltrd.elected) as count;
+parlprevious = FOREACH parlgroup GENERATE group AS num, COUNT (fltrd.elected) AS count;
 
-dump parlcount;
+DUMP parlprevious;
 
-parljank = FOREACH parliament GENERATE group + 1 as num, COUNT (fltrd.elected) as count;
+parlcurrent = FOREACH parlgroup GENERATE group + 1 AS num, COUNT (fltrd.elected) AS count;
 
-dump parljank;
+DUMP parlcurrent;
 
-parldif = JOIN parlcount BY (num), parljank BY (num);
+parljoined = JOIN parlprevious BY (num), parlcurrent BY (num);
 
-dump parldif;
+DUMP parljoined;
 
-parlfinal = FOREACH parldif GENERATE parlcount::num, parljank::count - parlcount::count;
+parldifference = FOREACH parljoined GENERATE parlprevious::num, parlcurrent::num, parlcurrent::count - parlprevious::count;
 
-DUMP parlfinal;
+DUMP parldifference;
 
 --rmf q3
---STORE parlcount INTO 'q3' USING PigStorage (',');
+--STORE parlprevious INTO 'q3' USING PigStorage (',');
