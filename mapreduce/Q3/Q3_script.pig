@@ -7,6 +7,8 @@ parliament = GROUP raw by parl;
 --gets count of elected people i.e. number of members in parliament
 parlcount = FOREACH parliament GENERATE group, SUM(raw.elected);
 
+parldif = FOREACH parlcount GENERATE group, 
+
 dump parlcount;
 
 --rmf q3
