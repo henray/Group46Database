@@ -7,11 +7,17 @@ fltrd = FILTER raw by type == 'Gen' AND elected == 1;
 parliament = GROUP fltrd by parl;
 
 --gets count of elected people i.e. number of members in parliament
-parlcount = FOREACH parliament GENERATE group as num, SUM(fltrd.elected) as count;
+parlcount = FOREACH parliament GENERATE group as num, COUNT (fltrd.elected) as count;
 
-parljank = FOREACH parliament GENERATE group - 1 as num, SUM(fltrd.elected) as count;
+dump parlcount;
+
+parljank = FOREACH parliament GENERATE group + 1 as num, COUNT (fltrd.elected) as count;
+
+dump parljank;
 
 parldif = join parlcount by (num), parljank by (num);
+
+dump parldif;
 
 parlfinal = FOREACH parldif GENERATE parlcount::num, parljank::count - parlcount::count;
 
