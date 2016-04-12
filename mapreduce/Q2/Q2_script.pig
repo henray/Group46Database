@@ -15,4 +15,4 @@ gen = foreach results generate winner::lastname, loser::lastname, winner::votes-
 
 final = FILTER gen by difference < 10;
 
-STORE results INTO 'q2' USING PigStorage (',');
+STORE final INTO 'q2' USING PigStorage (',');
