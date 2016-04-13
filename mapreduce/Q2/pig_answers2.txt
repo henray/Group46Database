@@ -7,8 +7,7 @@
 	
 (b) What does the schema look like just after the join?
 
-	| results     | winner::date:bytearray     | winner::type:chararray     | winner::parl:int     | winner::prov:chararray     | winner::riding:chararray     | winner::lastname:chararray     | winner::firstname:chararray     | winner::gender:chararray     | winner::occupation:chararray     | winner::party:chararray     | winner::votes:int     | winner::percent:double     | winner::elected:int     | loser::date:bytearray     | loser::type:chararray     | loser::parl:int     | loser::prov:chararray     | loser::riding:chararray     | loser::lastname:chararray     | loser::firstname:chararray     | loser::gender:chararray     | loser::occupation:chararray     | loser::party:chararray      | loser::votes:int     | loser::percent:double     | loser::elected:int     |
-
+	| results     | winner::date:bytearray     | winner::type:chararray     | winner::parl:int     | winner::prov:chararray     | winner::riding:chararray     | winner::lastname:chararray     | winner::firstname:chararray     | winner::gender:chararray     | winner::occupation:chararray     | winner::party:chararray     | winner::votes:int     | winner::percent:double     | winner::elected:int     | loser::date:bytearray     | loser::type:chararray     | loser::parl:int     | loser::prov:chararray     | loser::riding:chararray     | loser::lastname:chararray     | loser::firstname:chararray     | loser::gender:chararray     | loser::occupation:chararray     | loser::party:chararray     | loser::votes:int     | loser::percent:double     | loser::elected:int     |
 
 (c) How long did the query run?
 

@@ -1,6 +1,7 @@
 (a) What does the schema look like immediately after the group by? Is is nested or flat?
 
-	it is nested.
+	The schema is nested immediately after our GROUP BY call.
+	Structure below shows output from calling DESCRIBE:
 
 	parlgroup: {
 	    group: int,

@@ -17,6 +17,3 @@ parljoined = JOIN parlprevious BY (num), parlcurrent BY (num);
 parldifference = FOREACH parljoined GENERATE parlprevious::num, parlcurrent::count - parlprevious::count;
 
 DUMP parldifference
-
---rmf q3
---STORE parlprevious INTO 'q3' USING PigStorage (',');
