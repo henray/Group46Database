@@ -8,21 +8,15 @@ parlgroup = GROUP fltrd BY parl;
 
 --gets count of elected people i.e. number of members in parlgroup
 
-parlprevious = FOREACH parlgroup GENERATE group AS num, COUNT (fltrd.elected) AS count;
+parlprevious = FOREACH parlgroup GENERATE group + 1 AS num, COUNT (fltrd.elected) AS count;
 
-DUMP parlprevious;
-
-parlcurrent = FOREACH parlgroup GENERATE group + 1 AS num, COUNT (fltrd.elected) AS count;
-
-DUMP parlcurrent;
+parlcurrent = FOREACH parlgroup GENERATE group AS num, COUNT (fltrd.elected) AS count;
 
 parljoined = JOIN parlprevious BY (num), parlcurrent BY (num);
 
-DUMP parljoined;
+parldifference = FOREACH parljoined GENERATE parlprevious::num, parlcurrent::count - parlprevious::count;
 
-parldifference = FOREACH parljoined GENERATE parlprevious::num, parlcurrent::num, parlcurrent::count - parlprevious::count;
-
-DUMP parldifference;
+DUMP parldifference
 
 --rmf q3
 --STORE parlprevious INTO 'q3' USING PigStorage (',');
