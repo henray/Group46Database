@@ -17,4 +17,4 @@ results = FOREACH joined GENERATE parl_count::parl AS parl, party_count::party A
 
 rmf q4
 
-STORE results INTO 'q4' USING PigStorage('\t','-schema');
+STORE results INTO 'q4' USING PigStorage(',');
