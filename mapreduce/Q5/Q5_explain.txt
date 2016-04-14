@@ -1,0 +1,714 @@
+#-----------------------------------------------
+# New Logical Plan:
+#-----------------------------------------------
+final_results: (Name: LOStore Schema: managerId#1588:int,lastname#1572:chararray,employees#1594:long)
+|
+|---final_results: (Name: LODistinct Schema: managerId#1588:int,lastname#1572:chararray,employees#1594:long)
+    |
+    |---final: (Name: LOForEach Schema: managerId#1588:int,lastname#1572:chararray,employees#1594:long)
+        |   |
+        |   (Name: LOGenerate[true,true,true] Schema: managerId#1588:int,lastname#1572:chararray,employees#1594:long)ColumnPrune:InputUids=[1595]ColumnPrune:OutputUids=[1594, 1572, 1588]
+        |   |   |
+        |   |   (Name: Dereference Type: bag Uid: 1598 Column:[14])
+        |   |   |
+        |   |   |---joined2:(Name: Project Type: bag Uid: 1595 Input: 0 Column: (*))
+        |   |   |
+        |   |   (Name: Dereference Type: bag Uid: 1600 Column:[9])
+        |   |   |
+        |   |   |---joined2:(Name: Project Type: bag Uid: 1595 Input: 1 Column: (*))
+        |   |   |
+        |   |   (Name: Dereference Type: bag Uid: 1602 Column:[15])
+        |   |   |
+        |   |   |---joined2:(Name: Project Type: bag Uid: 1595 Input: 2 Column: (*))
+        |   |
+        |   |---joined2: (Name: LOInnerLoad[1] Schema: joined::employees::empid#1562:int,joined::employees::fname#1563:chararray,joined::employees::lname#1564:chararray,joined::employees::deptname#1565:chararray,joined::employees::isManager#1566:chararray,joined::employees::mgrid#1567:int,joined::employees::salary#1568:int,joined::managers::empid#1570:int,joined::managers::fname#1571:chararray,joined::managers::lname#1572:chararray,joined::managers::deptname#1573:chararray,joined::managers::isManager#1574:chararray,joined::managers::mgrid#1575:int,joined::managers::salary#1576:int,grouped_count::mgrid#1588:int,grouped_count::count#1594:long)
+        |   |
+        |   |---joined2: (Name: LOInnerLoad[1] Schema: joined::employees::empid#1562:int,joined::employees::fname#1563:chararray,joined::employees::lname#1564:chararray,joined::employees::deptname#1565:chararray,joined::employees::isManager#1566:chararray,joined::employees::mgrid#1567:int,joined::employees::salary#1568:int,joined::managers::empid#1570:int,joined::managers::fname#1571:chararray,joined::managers::lname#1572:chararray,joined::managers::deptname#1573:chararray,joined::managers::isManager#1574:chararray,joined::managers::mgrid#1575:int,joined::managers::salary#1576:int,grouped_count::mgrid#1588:int,grouped_count::count#1594:long)
+        |   |
+        |   |---joined2: (Name: LOInnerLoad[1] Schema: joined::employees::empid#1562:int,joined::employees::fname#1563:chararray,joined::employees::lname#1564:chararray,joined::employees::deptname#1565:chararray,joined::employees::isManager#1566:chararray,joined::employees::mgrid#1567:int,joined::employees::salary#1568:int,joined::managers::empid#1570:int,joined::managers::fname#1571:chararray,joined::managers::lname#1572:chararray,joined::managers::deptname#1573:chararray,joined::managers::isManager#1574:chararray,joined::managers::mgrid#1575:int,joined::managers::salary#1576:int,grouped_count::mgrid#1588:int,grouped_count::count#1594:long)
+        |
+        |---result: (Name: LOCogroup Schema: group#1567:int,joined2#1595:bag{#1613:tuple(joined::employees::empid#1562:int,joined::employees::fname#1563:chararray,joined::employees::lname#1564:chararray,joined::employees::deptname#1565:chararray,joined::employees::isManager#1566:chararray,joined::employees::mgrid#1567:int,joined::employees::salary#1568:int,joined::managers::empid#1570:int,joined::managers::fname#1571:chararray,joined::managers::lname#1572:chararray,joined::managers::deptname#1573:chararray,joined::managers::isManager#1574:chararray,joined::managers::mgrid#1575:int,joined::managers::salary#1576:int,grouped_count::mgrid#1588:int,grouped_count::count#1594:long)})
+            |   |
+            |   joined::employees::mgrid:(Name: Project Type: int Uid: 1567 Input: 0 Column: 5)
+            |
+            |---joined2: (Name: LOJoin(HASH) Schema: joined::employees::empid#1562:int,joined::employees::fname#1563:chararray,joined::employees::lname#1564:chararray,joined::employees::deptname#1565:chararray,joined::employees::isManager#1566:chararray,joined::employees::mgrid#1567:int,joined::employees::salary#1568:int,joined::managers::empid#1570:int,joined::managers::fname#1571:chararray,joined::managers::lname#1572:chararray,joined::managers::deptname#1573:chararray,joined::managers::isManager#1574:chararray,joined::managers::mgrid#1575:int,joined::managers::salary#1576:int,grouped_count::mgrid#1588:int,grouped_count::count#1594:long)
+                |   |
+                |   employees::mgrid:(Name: Project Type: int Uid: 1567 Input: 0 Column: 5)
+                |   |
+                |   mgrid:(Name: Project Type: int Uid: 1588 Input: 1 Column: 0)
+                |
+                |---joined: (Name: LOJoin(HASH) Schema: employees::empid#1562:int,employees::fname#1563:chararray,employees::lname#1564:chararray,employees::deptname#1565:chararray,employees::isManager#1566:chararray,employees::mgrid#1567:int,employees::salary#1568:int,managers::empid#1570:int,managers::fname#1571:chararray,managers::lname#1572:chararray,managers::deptname#1573:chararray,managers::isManager#1574:chararray,managers::mgrid#1575:int,managers::salary#1576:int)
+                |   |   |
+                |   |   mgrid:(Name: Project Type: int Uid: 1567 Input: 0 Column: 5)
+                |   |   |
+                |   |   empid:(Name: Project Type: int Uid: 1570 Input: 1 Column: 0)
+                |   |
+                |   |---employees: (Name: LOSplitOutput Schema: empid#1562:int,fname#1563:chararray,lname#1564:chararray,deptname#1565:chararray,isManager#1566:chararray,mgrid#1567:int,salary#1568:int)
+                |   |   |   |
+                |   |   |   (Name: Constant Type: boolean Uid: 1561)
+                |   |   |
+                |   |   |---employees: (Name: LOSplit Schema: empid#1552:int,fname#1553:chararray,lname#1554:chararray,deptname#1555:chararray,isManager#1556:chararray,mgrid#1557:int,salary#1558:int)
+                |   |       |
+                |   |       |---employees: (Name: LOFilter Schema: empid#1552:int,fname#1553:chararray,lname#1554:chararray,deptname#1555:chararray,isManager#1556:chararray,mgrid#1557:int,salary#1558:int)
+                |   |           |   |
+                |   |           |   (Name: Equal Type: boolean Uid: 1560)
+                |   |           |   |
+                |   |           |   |---isManager:(Name: Project Type: chararray Uid: 1556 Input: 0 Column: 4)
+                |   |           |   |
+                |   |           |   |---(Name: Constant Type: chararray Uid: 1559)
+                |   |           |
+                |   |           |---raw: (Name: LOSplitOutput Schema: empid#1552:int,fname#1553:chararray,lname#1554:chararray,deptname#1555:chararray,isManager#1556:chararray,mgrid#1557:int,salary#1558:int)
+                |   |               |   |
+                |   |               |   (Name: Constant Type: boolean Uid: 1551)
+                |   |               |
+                |   |               |---raw: (Name: LOSplit Schema: empid#1424:int,fname#1425:chararray,lname#1426:chararray,deptname#1427:chararray,isManager#1428:chararray,mgrid#1429:int,salary#1430:int)
+                |   |                   |
+                |   |                   |---raw: (Name: LOForEach Schema: empid#1424:int,fname#1425:chararray,lname#1426:chararray,deptname#1427:chararray,isManager#1428:chararray,mgrid#1429:int,salary#1430:int)
+                |   |                       |   |
+                |   |                       |   (Name: LOGenerate[false,false,false,false,false,false,false] Schema: empid#1424:int,fname#1425:chararray,lname#1426:chararray,deptname#1427:chararray,isManager#1428:chararray,mgrid#1429:int,salary#1430:int)ColumnPrune:InputUids=[1426, 1427, 1424, 1425, 1430, 1428, 1429]ColumnPrune:OutputUids=[1426, 1427, 1424, 1425, 1430, 1428, 1429]
+                |   |                       |   |   |
+                |   |                       |   |   (Name: Cast Type: int Uid: 1424)
+                |   |                       |   |   |
+                |   |                       |   |   |---empid:(Name: Project Type: bytearray Uid: 1424 Input: 0 Column: (*))
+                |   |                       |   |   |
+                |   |                       |   |   (Name: Cast Type: chararray Uid: 1425)
+                |   |                       |   |   |
+                |   |                       |   |   |---fname:(Name: Project Type: bytearray Uid: 1425 Input: 1 Column: (*))
+                |   |                       |   |   |
+                |   |                       |   |   (Name: Cast Type: chararray Uid: 1426)
+                |   |                       |   |   |
+                |   |                       |   |   |---lname:(Name: Project Type: bytearray Uid: 1426 Input: 2 Column: (*))
+                |   |                       |   |   |
+                |   |                       |   |   (Name: Cast Type: chararray Uid: 1427)
+                |   |                       |   |   |
+                |   |                       |   |   |---deptname:(Name: Project Type: bytearray Uid: 1427 Input: 3 Column: (*))
+                |   |                       |   |   |
+                |   |                       |   |   (Name: Cast Type: chararray Uid: 1428)
+                |   |                       |   |   |
+                |   |                       |   |   |---isManager:(Name: Project Type: bytearray Uid: 1428 Input: 4 Column: (*))
+                |   |                       |   |   |
+                |   |                       |   |   (Name: Cast Type: int Uid: 1429)
+                |   |                       |   |   |
+                |   |                       |   |   |---mgrid:(Name: Project Type: bytearray Uid: 1429 Input: 5 Column: (*))
+                |   |                       |   |   |
+                |   |                       |   |   (Name: Cast Type: int Uid: 1430)
+                |   |                       |   |   |
+                |   |                       |   |   |---salary:(Name: Project Type: bytearray Uid: 1430 Input: 6 Column: (*))
+                |   |                       |   |
+                |   |                       |   |---(Name: LOInnerLoad[0] Schema: empid#1424:bytearray)
+                |   |                       |   |
+                |   |                       |   |---(Name: LOInnerLoad[1] Schema: fname#1425:bytearray)
+                |   |                       |   |
+                |   |                       |   |---(Name: LOInnerLoad[2] Schema: lname#1426:bytearray)
+                |   |                       |   |
+                |   |                       |   |---(Name: LOInnerLoad[3] Schema: deptname#1427:bytearray)
+                |   |                       |   |
+                |   |                       |   |---(Name: LOInnerLoad[4] Schema: isManager#1428:bytearray)
+                |   |                       |   |
+                |   |                       |   |---(Name: LOInnerLoad[5] Schema: mgrid#1429:bytearray)
+                |   |                       |   |
+                |   |                       |   |---(Name: LOInnerLoad[6] Schema: salary#1430:bytearray)
+                |   |                       |
+                |   |                       |---raw: (Name: LOLoad Schema: empid#1424:bytearray,fname#1425:bytearray,lname#1426:bytearray,deptname#1427:bytearray,isManager#1428:bytearray,mgrid#1429:bytearray,salary#1430:bytearray)RequiredFields:null
+                |   |
+                |   |---managers: (Name: LOFilter Schema: empid#1570:int,fname#1571:chararray,lname#1572:chararray,deptname#1573:chararray,isManager#1574:chararray,mgrid#1575:int,salary#1576:int)
+                |       |   |
+                |       |   (Name: And Type: boolean Uid: 1620)
+                |       |   |
+                |       |   |---(Name: Equal Type: boolean Uid: 1578)
+                |       |   |   |
+                |       |   |   |---deptname:(Name: Project Type: chararray Uid: 1573 Input: 0 Column: 3)
+                |       |   |   |
+                |       |   |   |---(Name: Constant Type: chararray Uid: 1577)
+                |       |   |
+                |       |   |---(Name: Equal Type: boolean Uid: 1580)
+                |       |       |
+                |       |       |---isManager:(Name: Project Type: chararray Uid: 1574 Input: 0 Column: 4)
+                |       |       |
+                |       |       |---(Name: Constant Type: chararray Uid: 1579)
+                |       |
+                |       |---raw: (Name: LOSplitOutput Schema: empid#1570:int,fname#1571:chararray,lname#1572:chararray,deptname#1573:chararray,isManager#1574:chararray,mgrid#1575:int,salary#1576:int)
+                |           |   |
+                |           |   (Name: Constant Type: boolean Uid: 1569)
+                |           |
+                |           |---raw: (Name: LOSplit Schema: empid#1424:int,fname#1425:chararray,lname#1426:chararray,deptname#1427:chararray,isManager#1428:chararray,mgrid#1429:int,salary#1430:int)
+                |               |
+                |               |---raw: (Name: LOForEach Schema: empid#1424:int,fname#1425:chararray,lname#1426:chararray,deptname#1427:chararray,isManager#1428:chararray,mgrid#1429:int,salary#1430:int)
+                |                   |   |
+                |                   |   (Name: LOGenerate[false,false,false,false,false,false,false] Schema: empid#1424:int,fname#1425:chararray,lname#1426:chararray,deptname#1427:chararray,isManager#1428:chararray,mgrid#1429:int,salary#1430:int)ColumnPrune:InputUids=[1426, 1427, 1424, 1425, 1430, 1428, 1429]ColumnPrune:OutputUids=[1426, 1427, 1424, 1425, 1430, 1428, 1429]
+                |                   |   |   |
+                |                   |   |   (Name: Cast Type: int Uid: 1424)
+                |                   |   |   |
+                |                   |   |   |---empid:(Name: Project Type: bytearray Uid: 1424 Input: 0 Column: (*))
+                |                   |   |   |
+                |                   |   |   (Name: Cast Type: chararray Uid: 1425)
+                |                   |   |   |
+                |                   |   |   |---fname:(Name: Project Type: bytearray Uid: 1425 Input: 1 Column: (*))
+                |                   |   |   |
+                |                   |   |   (Name: Cast Type: chararray Uid: 1426)
+                |                   |   |   |
+                |                   |   |   |---lname:(Name: Project Type: bytearray Uid: 1426 Input: 2 Column: (*))
+                |                   |   |   |
+                |                   |   |   (Name: Cast Type: chararray Uid: 1427)
+                |                   |   |   |
+                |                   |   |   |---deptname:(Name: Project Type: bytearray Uid: 1427 Input: 3 Column: (*))
+                |                   |   |   |
+                |                   |   |   (Name: Cast Type: chararray Uid: 1428)
+                |                   |   |   |
+                |                   |   |   |---isManager:(Name: Project Type: bytearray Uid: 1428 Input: 4 Column: (*))
+                |                   |   |   |
+                |                   |   |   (Name: Cast Type: int Uid: 1429)
+                |                   |   |   |
+                |                   |   |   |---mgrid:(Name: Project Type: bytearray Uid: 1429 Input: 5 Column: (*))
+                |                   |   |   |
+                |                   |   |   (Name: Cast Type: int Uid: 1430)
+                |                   |   |   |
+                |                   |   |   |---salary:(Name: Project Type: bytearray Uid: 1430 Input: 6 Column: (*))
+                |                   |   |
+                |                   |   |---(Name: LOInnerLoad[0] Schema: empid#1424:bytearray)
+                |                   |   |
+                |                   |   |---(Name: LOInnerLoad[1] Schema: fname#1425:bytearray)
+                |                   |   |
+                |                   |   |---(Name: LOInnerLoad[2] Schema: lname#1426:bytearray)
+                |                   |   |
+                |                   |   |---(Name: LOInnerLoad[3] Schema: deptname#1427:bytearray)
+                |                   |   |
+                |                   |   |---(Name: LOInnerLoad[4] Schema: isManager#1428:bytearray)
+                |                   |   |
+                |                   |   |---(Name: LOInnerLoad[5] Schema: mgrid#1429:bytearray)
+                |                   |   |
+                |                   |   |---(Name: LOInnerLoad[6] Schema: salary#1430:bytearray)
+                |                   |
+                |                   |---raw: (Name: LOLoad Schema: empid#1424:bytearray,fname#1425:bytearray,lname#1426:bytearray,deptname#1427:bytearray,isManager#1428:bytearray,mgrid#1429:bytearray,salary#1430:bytearray)RequiredFields:null
+                |
+                |---grouped_count: (Name: LOForEach Schema: mgrid#1588:int,count#1594:long)
+                    |   |
+                    |   (Name: LOGenerate[false,false] Schema: mgrid#1588:int,count#1594:long)ColumnPrune:InputUids=[1590, 1588]ColumnPrune:OutputUids=[1594, 1588]
+                    |   |   |
+                    |   |   group:(Name: Project Type: int Uid: 1588 Input: 0 Column: (*))
+                    |   |   |
+                    |   |   (Name: UserFunc(org.apache.pig.builtin.COUNT) Type: long Uid: 1594)
+                    |   |   |
+                    |   |   |---(Name: Dereference Type: bag Uid: 1593 Column:[5])
+                    |   |       |
+                    |   |       |---employees:(Name: Project Type: bag Uid: 1590 Input: 1 Column: (*))
+                    |   |
+                    |   |---(Name: LOInnerLoad[0] Schema: group#1588:int)
+                    |   |
+                    |   |---employees: (Name: LOInnerLoad[1] Schema: empid#1583:int,fname#1584:chararray,lname#1585:chararray,deptname#1586:chararray,isManager#1587:chararray,mgrid#1588:int,salary#1589:int)
+                    |
+                    |---grouped: (Name: LOCogroup Schema: group#1588:int,employees#1590:bag{#1610:tuple(empid#1583:int,fname#1584:chararray,lname#1585:chararray,deptname#1586:chararray,isManager#1587:chararray,mgrid#1588:int,salary#1589:int)})
+                        |   |
+                        |   mgrid:(Name: Project Type: int Uid: 1588 Input: 0 Column: 5)
+                        |
+                        |---employees: (Name: LOSplitOutput Schema: empid#1583:int,fname#1584:chararray,lname#1585:chararray,deptname#1586:chararray,isManager#1587:chararray,mgrid#1588:int,salary#1589:int)
+                            |   |
+                            |   (Name: Constant Type: boolean Uid: 1582)
+                            |
+                            |---employees: (Name: LOSplit Schema: empid#1552:int,fname#1553:chararray,lname#1554:chararray,deptname#1555:chararray,isManager#1556:chararray,mgrid#1557:int,salary#1558:int)
+                                |
+                                |---employees: (Name: LOFilter Schema: empid#1552:int,fname#1553:chararray,lname#1554:chararray,deptname#1555:chararray,isManager#1556:chararray,mgrid#1557:int,salary#1558:int)
+                                    |   |
+                                    |   (Name: Equal Type: boolean Uid: 1560)
+                                    |   |
+                                    |   |---isManager:(Name: Project Type: chararray Uid: 1556 Input: 0 Column: 4)
+                                    |   |
+                                    |   |---(Name: Constant Type: chararray Uid: 1559)
+                                    |
+                                    |---raw: (Name: LOSplitOutput Schema: empid#1552:int,fname#1553:chararray,lname#1554:chararray,deptname#1555:chararray,isManager#1556:chararray,mgrid#1557:int,salary#1558:int)
+                                        |   |
+                                        |   (Name: Constant Type: boolean Uid: 1551)
+                                        |
+                                        |---raw: (Name: LOSplit Schema: empid#1424:int,fname#1425:chararray,lname#1426:chararray,deptname#1427:chararray,isManager#1428:chararray,mgrid#1429:int,salary#1430:int)
+                                            |
+                                            |---raw: (Name: LOForEach Schema: empid#1424:int,fname#1425:chararray,lname#1426:chararray,deptname#1427:chararray,isManager#1428:chararray,mgrid#1429:int,salary#1430:int)
+                                                |   |
+                                                |   (Name: LOGenerate[false,false,false,false,false,false,false] Schema: empid#1424:int,fname#1425:chararray,lname#1426:chararray,deptname#1427:chararray,isManager#1428:chararray,mgrid#1429:int,salary#1430:int)ColumnPrune:InputUids=[1426, 1427, 1424, 1425, 1430, 1428, 1429]ColumnPrune:OutputUids=[1426, 1427, 1424, 1425, 1430, 1428, 1429]
+                                                |   |   |
+                                                |   |   (Name: Cast Type: int Uid: 1424)
+                                                |   |   |
+                                                |   |   |---empid:(Name: Project Type: bytearray Uid: 1424 Input: 0 Column: (*))
+                                                |   |   |
+                                                |   |   (Name: Cast Type: chararray Uid: 1425)
+                                                |   |   |
+                                                |   |   |---fname:(Name: Project Type: bytearray Uid: 1425 Input: 1 Column: (*))
+                                                |   |   |
+                                                |   |   (Name: Cast Type: chararray Uid: 1426)
+                                                |   |   |
+                                                |   |   |---lname:(Name: Project Type: bytearray Uid: 1426 Input: 2 Column: (*))
+                                                |   |   |
+                                                |   |   (Name: Cast Type: chararray Uid: 1427)
+                                                |   |   |
+                                                |   |   |---deptname:(Name: Project Type: bytearray Uid: 1427 Input: 3 Column: (*))
+                                                |   |   |
+                                                |   |   (Name: Cast Type: chararray Uid: 1428)
+                                                |   |   |
+                                                |   |   |---isManager:(Name: Project Type: bytearray Uid: 1428 Input: 4 Column: (*))
+                                                |   |   |
+                                                |   |   (Name: Cast Type: int Uid: 1429)
+                                                |   |   |
+                                                |   |   |---mgrid:(Name: Project Type: bytearray Uid: 1429 Input: 5 Column: (*))
+                                                |   |   |
+                                                |   |   (Name: Cast Type: int Uid: 1430)
+                                                |   |   |
+                                                |   |   |---salary:(Name: Project Type: bytearray Uid: 1430 Input: 6 Column: (*))
+                                                |   |
+                                                |   |---(Name: LOInnerLoad[0] Schema: empid#1424:bytearray)
+                                                |   |
+                                                |   |---(Name: LOInnerLoad[1] Schema: fname#1425:bytearray)
+                                                |   |
+                                                |   |---(Name: LOInnerLoad[2] Schema: lname#1426:bytearray)
+                                                |   |
+                                                |   |---(Name: LOInnerLoad[3] Schema: deptname#1427:bytearray)
+                                                |   |
+                                                |   |---(Name: LOInnerLoad[4] Schema: isManager#1428:bytearray)
+                                                |   |
+                                                |   |---(Name: LOInnerLoad[5] Schema: mgrid#1429:bytearray)
+                                                |   |
+                                                |   |---(Name: LOInnerLoad[6] Schema: salary#1430:bytearray)
+                                                |
+                                                |---raw: (Name: LOLoad Schema: empid#1424:bytearray,fname#1425:bytearray,lname#1426:bytearray,deptname#1427:bytearray,isManager#1428:bytearray,mgrid#1429:bytearray,salary#1430:bytearray)RequiredFields:null
+#-----------------------------------------------
+# Physical Plan:
+#-----------------------------------------------
+final_results: Store(hdfs://cs421-hd1.cs.mcgill.ca:9000/user/cs421g46/q5:PigStorage(',')) - scope-93
+|
+|---final_results: PODistinct[bag] - scope-92
+    |
+    |---final: New For Each(true,true,true)[bag] - scope-91
+        |   |
+        |   Project[bag][14] - scope-83
+        |   |
+        |   |---Project[bag][1] - scope-82
+        |   |
+        |   Project[bag][9] - scope-86
+        |   |
+        |   |---Project[bag][1] - scope-85
+        |   |
+        |   Project[bag][15] - scope-89
+        |   |
+        |   |---Project[bag][1] - scope-88
+        |
+        |---result: Package(Packager)[tuple]{int} - scope-79
+            |
+            |---result: Global Rearrange[tuple] - scope-78
+                |
+                |---result: Local Rearrange[tuple]{int}(false) - scope-80
+                    |   |
+                    |   Project[int][5] - scope-81
+                    |
+                    |---joined2: New For Each(true,true)[tuple] - scope-77
+                        |   |
+                        |   Project[bag][1] - scope-75
+                        |   |
+                        |   Project[bag][2] - scope-76
+                        |
+                        |---joined2: Package(Packager)[tuple]{int} - scope-70
+                            |
+                            |---joined2: Global Rearrange[tuple] - scope-69
+                                |
+                                |---joined2: Local Rearrange[tuple]{int}(false) - scope-71
+                                |   |   |
+                                |   |   Project[int][5] - scope-72
+                                |   |
+                                |   |---joined: New For Each(true,true)[tuple] - scope-53
+                                |       |   |
+                                |       |   Project[bag][1] - scope-51
+                                |       |   |
+                                |       |   Project[bag][2] - scope-52
+                                |       |
+                                |       |---joined: Package(Packager)[tuple]{int} - scope-46
+                                |           |
+                                |           |---joined: Global Rearrange[tuple] - scope-45
+                                |               |
+                                |               |---joined: Local Rearrange[tuple]{int}(false) - scope-47
+                                |               |   |   |
+                                |               |   |   Project[int][5] - scope-48
+                                |               |   |
+                                |               |   |---employees: Filter[bag] - scope-31
+                                |               |       |   |
+                                |               |       |   Constant(true) - scope-32
+                                |               |       |
+                                |               |       |---employees: Split - scope-30
+                                |               |           |
+                                |               |           |---employees: Filter[bag] - scope-26
+                                |               |               |   |
+                                |               |               |   Equal To[boolean] - scope-29
+                                |               |               |   |
+                                |               |               |   |---Project[chararray][4] - scope-27
+                                |               |               |   |
+                                |               |               |   |---Constant(N) - scope-28
+                                |               |               |
+                                |               |               |---raw: Filter[bag] - scope-24
+                                |               |                   |   |
+                                |               |                   |   Constant(true) - scope-25
+                                |               |                   |
+                                |               |                   |---raw: Split - scope-23
+                                |               |                       |
+                                |               |                       |---raw: New For Each(false,false,false,false,false,false,false)[bag] - scope-22
+                                |               |                           |   |
+                                |               |                           |   Cast[int] - scope-2
+                                |               |                           |   |
+                                |               |                           |   |---Project[bytearray][0] - scope-1
+                                |               |                           |   |
+                                |               |                           |   Cast[chararray] - scope-5
+                                |               |                           |   |
+                                |               |                           |   |---Project[bytearray][1] - scope-4
+                                |               |                           |   |
+                                |               |                           |   Cast[chararray] - scope-8
+                                |               |                           |   |
+                                |               |                           |   |---Project[bytearray][2] - scope-7
+                                |               |                           |   |
+                                |               |                           |   Cast[chararray] - scope-11
+                                |               |                           |   |
+                                |               |                           |   |---Project[bytearray][3] - scope-10
+                                |               |                           |   |
+                                |               |                           |   Cast[chararray] - scope-14
+                                |               |                           |   |
+                                |               |                           |   |---Project[bytearray][4] - scope-13
+                                |               |                           |   |
+                                |               |                           |   Cast[int] - scope-17
+                                |               |                           |   |
+                                |               |                           |   |---Project[bytearray][5] - scope-16
+                                |               |                           |   |
+                                |               |                           |   Cast[int] - scope-20
+                                |               |                           |   |
+                                |               |                           |   |---Project[bytearray][6] - scope-19
+                                |               |                           |
+                                |               |                           |---raw: Load(/data2/emp.csv:PigStorage(',')) - scope-0
+                                |               |
+                                |               |---joined: Local Rearrange[tuple]{int}(false) - scope-49
+                                |                   |   |
+                                |                   |   Project[int][0] - scope-50
+                                |                   |
+                                |                   |---managers: Filter[bag] - scope-35
+                                |                       |   |
+                                |                       |   And[boolean] - scope-42
+                                |                       |   |
+                                |                       |   |---Equal To[boolean] - scope-38
+                                |                       |   |   |
+                                |                       |   |   |---Project[chararray][3] - scope-36
+                                |                       |   |   |
+                                |                       |   |   |---Constant(Finance) - scope-37
+                                |                       |   |
+                                |                       |   |---Equal To[boolean] - scope-41
+                                |                       |       |
+                                |                       |       |---Project[chararray][4] - scope-39
+                                |                       |       |
+                                |                       |       |---Constant(Y) - scope-40
+                                |                       |
+                                |                       |---raw: Filter[bag] - scope-33
+                                |                           |   |
+                                |                           |   Constant(true) - scope-34
+                                |                           |
+                                |                           |---raw: Split - scope-23
+                                |                               |
+                                |                               |---raw: New For Each(false,false,false,false,false,false,false)[bag] - scope-22
+                                |                                   |   |
+                                |                                   |   Cast[int] - scope-2
+                                |                                   |   |
+                                |                                   |   |---Project[bytearray][0] - scope-1
+                                |                                   |   |
+                                |                                   |   Cast[chararray] - scope-5
+                                |                                   |   |
+                                |                                   |   |---Project[bytearray][1] - scope-4
+                                |                                   |   |
+                                |                                   |   Cast[chararray] - scope-8
+                                |                                   |   |
+                                |                                   |   |---Project[bytearray][2] - scope-7
+                                |                                   |   |
+                                |                                   |   Cast[chararray] - scope-11
+                                |                                   |   |
+                                |                                   |   |---Project[bytearray][3] - scope-10
+                                |                                   |   |
+                                |                                   |   Cast[chararray] - scope-14
+                                |                                   |   |
+                                |                                   |   |---Project[bytearray][4] - scope-13
+                                |                                   |   |
+                                |                                   |   Cast[int] - scope-17
+                                |                                   |   |
+                                |                                   |   |---Project[bytearray][5] - scope-16
+                                |                                   |   |
+                                |                                   |   Cast[int] - scope-20
+                                |                                   |   |
+                                |                                   |   |---Project[bytearray][6] - scope-19
+                                |                                   |
+                                |                                   |---raw: Load(/data2/emp.csv:PigStorage(',')) - scope-0
+                                |
+                                |---joined2: Local Rearrange[tuple]{int}(false) - scope-73
+                                    |   |
+                                    |   Project[int][0] - scope-74
+                                    |
+                                    |---grouped_count: New For Each(false,false)[bag] - scope-66
+                                        |   |
+                                        |   Project[int][0] - scope-60
+                                        |   |
+                                        |   POUserFunc(org.apache.pig.builtin.COUNT)[long] - scope-64
+                                        |   |
+                                        |   |---Project[bag][5] - scope-63
+                                        |       |
+                                        |       |---Project[bag][1] - scope-62
+                                        |
+                                        |---grouped: Package(Packager)[tuple]{int} - scope-57
+                                            |
+                                            |---grouped: Global Rearrange[tuple] - scope-56
+                                                |
+                                                |---grouped: Local Rearrange[tuple]{int}(false) - scope-58
+                                                    |   |
+                                                    |   Project[int][5] - scope-59
+                                                    |
+                                                    |---employees: Filter[bag] - scope-54
+                                                        |   |
+                                                        |   Constant(true) - scope-55
+                                                        |
+                                                        |---employees: Split - scope-30
+                                                            |
+                                                            |---employees: Filter[bag] - scope-26
+                                                                |   |
+                                                                |   Equal To[boolean] - scope-29
+                                                                |   |
+                                                                |   |---Project[chararray][4] - scope-27
+                                                                |   |
+                                                                |   |---Constant(N) - scope-28
+                                                                |
+                                                                |---raw: Filter[bag] - scope-24
+                                                                    |   |
+                                                                    |   Constant(true) - scope-25
+                                                                    |
+                                                                    |---raw: Split - scope-23
+                                                                        |
+                                                                        |---raw: New For Each(false,false,false,false,false,false,false)[bag] - scope-22
+                                                                            |   |
+                                                                            |   Cast[int] - scope-2
+                                                                            |   |
+                                                                            |   |---Project[bytearray][0] - scope-1
+                                                                            |   |
+                                                                            |   Cast[chararray] - scope-5
+                                                                            |   |
+                                                                            |   |---Project[bytearray][1] - scope-4
+                                                                            |   |
+                                                                            |   Cast[chararray] - scope-8
+                                                                            |   |
+                                                                            |   |---Project[bytearray][2] - scope-7
+                                                                            |   |
+                                                                            |   Cast[chararray] - scope-11
+                                                                            |   |
+                                                                            |   |---Project[bytearray][3] - scope-10
+                                                                            |   |
+                                                                            |   Cast[chararray] - scope-14
+                                                                            |   |
+                                                                            |   |---Project[bytearray][4] - scope-13
+                                                                            |   |
+                                                                            |   Cast[int] - scope-17
+                                                                            |   |
+                                                                            |   |---Project[bytearray][5] - scope-16
+                                                                            |   |
+                                                                            |   Cast[int] - scope-20
+                                                                            |   |
+                                                                            |   |---Project[bytearray][6] - scope-19
+                                                                            |
+                                                                            |---raw: Load(/data2/emp.csv:PigStorage(',')) - scope-0
+
+#--------------------------------------------------
+# Map Reduce Plan                                  
+#--------------------------------------------------
+MapReduce node scope-94
+Map Plan
+Split - scope-148
+|   |
+|   Split - scope-147
+|   |   |
+|   |   grouped: Local Rearrange[tuple]{int}(false) - scope-138
+|   |   |   |
+|   |   |   Project[int][0] - scope-140
+|   |   |
+|   |   |---grouped_count: New For Each(false,false)[bag] - scope-126
+|   |       |   |
+|   |       |   Project[int][0] - scope-127
+|   |       |   |
+|   |       |   POUserFunc(org.apache.pig.builtin.COUNT$Initial)[tuple] - scope-128
+|   |       |   |
+|   |       |   |---Project[bag][5] - scope-129
+|   |       |       |
+|   |       |       |---Project[bag][1] - scope-130
+|   |       |
+|   |       |---Pre Combiner Local Rearrange[tuple]{Unknown} - scope-141
+|   |   |
+|   |   Store(hdfs://cs421-hd1.cs.mcgill.ca:9000/tmp/temp-1906215798/tmp615734909:org.apache.pig.impl.io.InterStorage) - scope-98
+|   |
+|   |---employees: Filter[bag] - scope-26
+|       |   |
+|       |   Equal To[boolean] - scope-29
+|       |   |
+|       |   |---Project[chararray][4] - scope-27
+|       |   |
+|       |   |---Constant(N) - scope-28
+|   |
+|   Store(hdfs://cs421-hd1.cs.mcgill.ca:9000/tmp/temp-1906215798/tmp1812247995:org.apache.pig.impl.io.InterStorage) - scope-95
+|
+|---raw: New For Each(false,false,false,false,false,false,false)[bag] - scope-22
+    |   |
+    |   Cast[int] - scope-2
+    |   |
+    |   |---Project[bytearray][0] - scope-1
+    |   |
+    |   Cast[chararray] - scope-5
+    |   |
+    |   |---Project[bytearray][1] - scope-4
+    |   |
+    |   Cast[chararray] - scope-8
+    |   |
+    |   |---Project[bytearray][2] - scope-7
+    |   |
+    |   Cast[chararray] - scope-11
+    |   |
+    |   |---Project[bytearray][3] - scope-10
+    |   |
+    |   Cast[chararray] - scope-14
+    |   |
+    |   |---Project[bytearray][4] - scope-13
+    |   |
+    |   Cast[int] - scope-17
+    |   |
+    |   |---Project[bytearray][5] - scope-16
+    |   |
+    |   Cast[int] - scope-20
+    |   |
+    |   |---Project[bytearray][6] - scope-19
+    |
+    |---raw: Load(/data2/emp.csv:PigStorage(',')) - scope-0--------
+Combine Plan
+grouped: Local Rearrange[tuple]{int}(false) - scope-142
+|   |
+|   Project[int][0] - scope-144
+|
+|---grouped_count: New For Each(false,false)[bag] - scope-131
+    |   |
+    |   Project[int][0] - scope-132
+    |   |
+    |   POUserFunc(org.apache.pig.builtin.COUNT$Intermediate)[tuple] - scope-133
+    |   |
+    |   |---Project[bag][1] - scope-134
+    |
+    |---grouped: Package(CombinerPackager)[tuple]{int} - scope-137--------
+Reduce Plan
+Store(hdfs://cs421-hd1.cs.mcgill.ca:9000/tmp/temp-1906215798/tmp-1510715696:org.apache.pig.impl.io.InterStorage) - scope-110
+|
+|---grouped_count: New For Each(false,false)[bag] - scope-66
+    |   |
+    |   Project[int][0] - scope-60
+    |   |
+    |   POUserFunc(org.apache.pig.builtin.COUNT$Final)[long] - scope-64
+    |   |
+    |   |---Project[bag][1] - scope-135
+    |
+    |---grouped: Package(CombinerPackager)[tuple]{int} - scope-57--------
+Global sort: false
+----------------
+
+MapReduce node scope-103
+Map Plan
+Union[tuple] - scope-104
+|
+|---joined: Local Rearrange[tuple]{int}(false) - scope-47
+|   |   |
+|   |   Project[int][5] - scope-48
+|   |
+|   |---Load(hdfs://cs421-hd1.cs.mcgill.ca:9000/tmp/temp-1906215798/tmp615734909:org.apache.pig.impl.io.InterStorage) - scope-99
+|
+|---joined: Local Rearrange[tuple]{int}(false) - scope-49
+    |   |
+    |   Project[int][0] - scope-50
+    |
+    |---managers: Filter[bag] - scope-35
+        |   |
+        |   And[boolean] - scope-42
+        |   |
+        |   |---Equal To[boolean] - scope-38
+        |   |   |
+        |   |   |---Project[chararray][3] - scope-36
+        |   |   |
+        |   |   |---Constant(Finance) - scope-37
+        |   |
+        |   |---Equal To[boolean] - scope-41
+        |       |
+        |       |---Project[chararray][4] - scope-39
+        |       |
+        |       |---Constant(Y) - scope-40
+        |
+        |---Load(hdfs://cs421-hd1.cs.mcgill.ca:9000/tmp/temp-1906215798/tmp1812247995:org.apache.pig.impl.io.InterStorage) - scope-101--------
+Reduce Plan
+Store(hdfs://cs421-hd1.cs.mcgill.ca:9000/tmp/temp-1906215798/tmp1802290327:org.apache.pig.impl.io.InterStorage) - scope-105
+|
+|---joined: Package(JoinPackager(true,true))[tuple]{int} - scope-46--------
+Global sort: false
+----------------
+
+MapReduce node scope-113
+Map Plan
+Union[tuple] - scope-114
+|
+|---joined2: Local Rearrange[tuple]{int}(false) - scope-71
+|   |   |
+|   |   Project[int][5] - scope-72
+|   |
+|   |---Load(hdfs://cs421-hd1.cs.mcgill.ca:9000/tmp/temp-1906215798/tmp1802290327:org.apache.pig.impl.io.InterStorage) - scope-106
+|
+|---joined2: Local Rearrange[tuple]{int}(false) - scope-73
+    |   |
+    |   Project[int][0] - scope-74
+    |
+    |---Load(hdfs://cs421-hd1.cs.mcgill.ca:9000/tmp/temp-1906215798/tmp-1510715696:org.apache.pig.impl.io.InterStorage) - scope-111--------
+Reduce Plan
+Store(hdfs://cs421-hd1.cs.mcgill.ca:9000/tmp/temp-1906215798/tmp341867967:org.apache.pig.impl.io.InterStorage) - scope-115
+|
+|---joined2: Package(JoinPackager(true,true))[tuple]{int} - scope-70--------
+Global sort: false
+----------------
+
+MapReduce node scope-117
+Map Plan
+result: Local Rearrange[tuple]{int}(false) - scope-80
+|   |
+|   Project[int][5] - scope-81
+|
+|---Load(hdfs://cs421-hd1.cs.mcgill.ca:9000/tmp/temp-1906215798/tmp341867967:org.apache.pig.impl.io.InterStorage) - scope-116--------
+Reduce Plan
+Store(hdfs://cs421-hd1.cs.mcgill.ca:9000/tmp/temp-1906215798/tmp1954814475:org.apache.pig.impl.io.InterStorage) - scope-120
+|
+|---final: New For Each(true,true,true)[bag] - scope-91
+    |   |
+    |   Project[bag][14] - scope-83
+    |   |
+    |   |---Project[bag][1] - scope-82
+    |   |
+    |   Project[bag][9] - scope-86
+    |   |
+    |   |---Project[bag][1] - scope-85
+    |   |
+    |   Project[bag][15] - scope-89
+    |   |
+    |   |---Project[bag][1] - scope-88
+    |
+    |---result: Package(Packager)[tuple]{int} - scope-79--------
+Global sort: false
+----------------
+
+MapReduce node scope-122
+Map Plan
+Local Rearrange[tuple]{tuple}(true) - scope-119
+|   |
+|   Project[tuple][*] - scope-118
+|
+|---Load(hdfs://cs421-hd1.cs.mcgill.ca:9000/tmp/temp-1906215798/tmp1954814475:org.apache.pig.impl.io.InterStorage) - scope-121--------
+Reduce Plan
+final_results: Store(hdfs://cs421-hd1.cs.mcgill.ca:9000/user/cs421g46/q5:PigStorage(',')) - scope-93
+|
+|---New For Each(true)[bag] - scope-125
+    |   |
+    |   Project[tuple][0] - scope-124
+    |
+    |---Package(Packager)[tuple]{tuple} - scope-123--------
+Global sort: false
+----------------
+
