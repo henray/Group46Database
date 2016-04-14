@@ -1,3 +1,5 @@
+rmf q5
+
 raw = LOAD '/data2/emp.csv' USING PigStorage(',') AS (empid:int, fname:chararray, lname:chararray, deptname:chararray, isManager:chararray, mgrid:int, salary:int);
 
 managers = FILTER raw BY ((deptname == 'Finance') AND (isManager == 'Y'));
