@@ -30,8 +30,10 @@ DESCRIBE result;
 
 final = FOREACH result GENERATE FLATTEN(joined2.grouped_count::mgrid) AS managerId, FLATTEN(joined2.joined::managers::lname) AS lastname, FLATTEN(joined2.grouped_count::count) AS employees;
 
-final_distinct = DISTINCT final;
+final_results = DISTINCT final;
+
+rmf q5
+
+STORE final_results INTO 'q5' USING PigStorage(',');
 
 DUMP final;
-
---STORE results INTO 'q5' USING PigStorage(',');

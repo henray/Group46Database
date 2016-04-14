@@ -27,4 +27,7 @@
 
 (c) Is the difference in query execution time what you were expecting ? Describe what you were expecting to see and (if that is not what happened in the end) why you think it did not happen ?
 
-	Since the file is only 4mb in size, we weren't sure if the reduction in query time due to parallelism would be greater than the increase in communication time between compute nodes. It seems that the difference is neglible.
+	We thought that by increasing the number of nodes by four-folds, the execution time would have improved dramatically. 
+	However, when we saw the output we realized that the increase in execution time was really negligible when we increase the number of reduce tasks. 
+	We hypothesize that the bulk of the work is being done during the map task phase, 
+	and consequently the execution time does not improve very much when we add more reduce tasks.
