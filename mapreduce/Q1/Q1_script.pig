@@ -13,4 +13,6 @@ results = DISTINCT gen;
 --print the result tuple to the screen
 DUMP results;
 
+rmf q1
+
 STORE results INTO 'q1' USING PigStorage (',');
