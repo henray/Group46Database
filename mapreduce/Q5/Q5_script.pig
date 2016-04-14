@@ -1,5 +1,3 @@
-rmf q5
-
 raw = LOAD '/data2/emp.csv' USING PigStorage(',') AS (empid:int, fname:chararray, lname:chararray, deptname:chararray, isManager:chararray, mgrid:int, salary:int);
 
 managers = FILTER raw BY ((deptname == 'Finance') AND (isManager == 'Y'));
@@ -33,6 +31,8 @@ DESCRIBE result;
 final = FOREACH result GENERATE FLATTEN(joined2.grouped_count::mgrid) AS managerId, FLATTEN(joined2.joined::managers::lname) AS lastname, FLATTEN(joined2.grouped_count::count) AS employees;
 
 final_results = DISTINCT final;
+
+rmf q5
 
 STORE final_results INTO 'q5' USING PigStorage(',');
 
